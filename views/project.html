@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project | DumbWays Task</title>
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/project.css" />
+  </head>
+  <body>
+    <section class="navbar">
+      <nav>
+        <div class="navbar-brand"><span>Dumbways Task</span></div>
+        <div class="navbar-toggle" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="../index.html">Home</a>
+          <a class="active" href="contact.html">My Project</a>
+          <!-- <a href="#contact">Project</a> -->
+          <a class="nav-btn" href="../views/contact.html">Contact Me</a>
+        </div>
+      </nav>
+    </section>
+    <section id="contact">
+      <div class="contact-form">
+        <div class="form-control">
+          <div class="title">
+            <h1 style="margin-bottom: 30px">Add My Project</h1>
+          </div>
+          <form class="project-form">
+            <label for="projectname">Project Name</label><br />
+            <input
+              required
+              class="input-form"
+              type="text"
+              id="projectname"
+              name="projectname"
+            /><br />
+            <div class="dateinput">
+              <div>
+                <label for="startdate">Start Date</label><br />
+                <input
+                  required
+                  class="input-form"
+                  type="date"
+                  id="startdate"
+                  name="startdate"
+                /><br />
+              </div>
+
+              <div>
+                <label for="enddate">End Date</label><br />
+                <input
+                  required
+                  class="input-form"
+                  type="date"
+                  id="enddate"
+                  name="enddate"
+                /><br />
+              </div>
+            </div>
+
+            <label for="description">Description</label><br />
+            <textarea
+              required
+              class="input-form"
+              name="description"
+              id="description"
+            ></textarea
+            ><br />
+            <label for="technologies">Technologies</label><br />
+            <div class="checkbox-wrapper">
+              <div class="checkbox">
+                <input
+                  type="checkbox"
+                  id="nodejs"
+                  name="technologies"
+                  value="Node.js"
+                />
+                <label for="nodejs">Node.js</label><br />
+              </div>
+              <div class="checkbox">
+                <input
+                  type="checkbox"
+                  id="reactjs"
+                  name="technologies"
+                  value="React.js"
+                />
+                <label for="reactjs">React.js</label><br />
+              </div>
+              <div class="checkbox">
+                <input
+                  type="checkbox"
+                  id="nextjs"
+                  name="technologies"
+                  value="Next.js"
+                />
+                <label for="nextjs">Next.js</label><br />
+              </div>
+              <div class="checkbox">
+                <input
+                  type="checkbox"
+                  id="typescript"
+                  name="technologies"
+                  value="TypeScript"
+                />
+                <label for="typescript">TypeScript</label><br />
+              </div>
+            </div>
+            <div class="upload-wrapper">
+              <label for="image-upload">Upload Image</label><br />
+              <div class="input-container">
+                <input
+                  type="file"
+                  id="image-upload"
+                  class="upload-input"
+                  accept="image/*"
+                />
+                <img
+                  style="margin-right: 10px"
+                  width="25px"
+                  src="ath.svg"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="btn-wrapper">
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section id="project">
+      <div class="project-wrapper">
+        <div class="project-cart">
+          <div class="title-project">
+            <h1>My Project</h1>
+          </div>
+
+          <div class="cart-wrapper">
+            <div class="cart">
+              <div class="cart-body">
+                <img
+                  width="100%"
+                  height="200px"
+                  src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
+                  alt=""
+                />
+                <div class="cart-desc">
+                  <h4>Dumbways Mobile App - 2024</h4>
+                  <p>durasi: 3 bulan</p>
+                  <p class="deskripsi">
+                    App That used for dumbways student , it was deployed and can
+                    downloaded on playstore. Happy download
+                  </p>
+                </div>
+                <div class="icon">
+                  <img
+                    src="../assets/img/svg/playstore-svgrepo-com.svg"
+                    alt=""
+                  />
+                  <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                  <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                </div>
+                <div class="btn-cart">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="cart">
+              <div class="cart-body">
+                <img
+                  width="100%"
+                  height="200px"
+                  src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
+                  alt=""
+                />
+                <div class="cart-desc">
+                  <h4>Dumbways Mobile App - 2024</h4>
+                  <p>durasi: 3 bulan</p>
+                  <p class="deskripsi">
+                    App That used for dumbways student , it was deployed and can
+                    downloaded on playstore. Happy download
+                  </p>
+                </div>
+                <div class="icon">
+                  <img
+                    src="../assets/img/svg/playstore-svgrepo-com.svg"
+                    alt=""
+                  />
+                  <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                  <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                </div>
+                <div class="btn-cart">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="cart">
+              <div class="cart-body">
+                <img
+                  width="100%"
+                  height="200px"
+                  src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
+                  alt=""
+                />
+                <div class="cart-desc">
+                  <h4>Dumbways Mobile App - 2024</h4>
+                  <p>durasi: 3 bulan</p>
+                  <p class="deskripsi">
+                    App That used for dumbways student , it was deployed and can
+                    downloaded on playstore. Happy download
+                  </p>
+                </div>
+                <div class="icon">
+                  <img
+                    src="../assets/img/svg/playstore-svgrepo-com.svg"
+                    alt=""
+                  />
+                  <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                  <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                </div>
+                <div class="btn-cart">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="cart">
+              <div class="cart-body">
+                <img
+                  width="100%"
+                  height="200px"
+                  src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
+                  alt=""
+                />
+                <div class="cart-desc">
+                  <h4>Dumbways Mobile App - 2024</h4>
+                  <p>durasi: 3 bulan</p>
+                  <p class="deskripsi">
+                    App That used for dumbways student , it was deployed and can
+                    downloaded on playstore. Happy download
+                  </p>
+                </div>
+                <div class="icon">
+                  <img
+                    src="../assets/img/svg/playstore-svgrepo-com.svg"
+                    alt=""
+                  />
+                  <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                  <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                </div>
+                <div class="btn-cart">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="cart">
+              <div class="cart-body">
+                <img
+                  width="100%"
+                  height="200px"
+                  src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
+                  alt=""
+                />
+                <div class="cart-desc">
+                  <h4>Dumbways Mobile App - 2024</h4>
+                  <p>durasi: 3 bulan</p>
+                  <p class="deskripsi">
+                    App That used for dumbways student , it was deployed and can
+                    downloaded on playstore. Happy download
+                  </p>
+                </div>
+                <div class="icon">
+                  <img
+                    src="../assets/img/svg/playstore-svgrepo-com.svg"
+                    alt=""
+                  />
+                  <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                  <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                </div>
+                <div class="btn-cart">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>
