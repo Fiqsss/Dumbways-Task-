@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog | DumbWays Task</title>
+    <link rel="stylesheet" href="../assets/css/blog.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <section class="navbar">
+      <nav>
+        <div class="navbar-brand"><span>Dumbways Task</span></div>
+        <div class="navbar-toggle" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="../index.html">Home</a>
+          <a href="../views/blog.html" class="active">Blog</a>
+          <a href="../views/project.html">My Project</a>
+          <!-- <a href="#contact">Project</a> -->
+          <a class="nav-btn" href="../views/contact.html">Contact Me</a>
+        </div>
+      </nav>
+    </section>
+    <!-- END NAVBAR -->
+    <!-- MAIN -->
+    <main>
+      <!-- ADD BLOG -->
+      <section id="kotak">
+        <div class="contain">
+          <div class="containt-wrapper">
+            <div class="blog-title"><h1>Create Blog Post</h1></div>
+            <div class="form-control">
+              <form action="">
+                <label for="title">Title</label><br />
+                <input
+                  required
+                  class="input-form"
+                  type="text"
+                  id="title"
+                  name="title"
+                /><br />
+                <label for="content">Content</label><br />
+                <textarea
+                  required
+                  class="input-form"
+                  name="content"
+                  id="content"
+                  cols="30"
+                  rows="10"
+                ></textarea
+                ><br />
+                <div class="upload-wrapper">
+                  <label for="image-upload">Upload Image</label><br />
+                  <div class="input-container">
+                    <input
+                      type="file"
+                      id="image-upload"
+                      class="upload-input"
+                      accept="image/*"
+                      name="image"
+                    />
+                    <img
+                      style="margin-right: 10px"
+                      width="25px"
+                      src="../assets/img/svg/attachment-attach-svgrepo-com.svg"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <button onclick="addBlog(event)" class="btn-submit">Submit</button>
+              </form>
+          </div>
+        </div>
+      </section>
+      <!-- END ADD BLOG -->
+       <section id="blog">
+        <div id="blog" class="blog-wrapper">
+          <div class="blog-wrapper">
+            <div class="blog-cart">
+              <div class="cart-wrapper">
+                <h1>My Blog</h1>
+                <div class="cart">
+                  <div class="cart-image">
+                    <img width="300" src="../assets/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg" alt="">
+                  </div>
+                  <div class="cart-description">
+                    <div class="btn-blog">
+                      <button class="edit">Edit Post</button>
+                      <button class="post">Post Blog</button>
+                    </div>
+                    <div class="title-blog">
+                      <h1>Blog Dumbways</h1>
+                    </div>
+                    <div class="containt-blog">
+                      <p>12 July 2024 22:00 | 3 Comments</p>
+                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate voluptas sit fugiat cum maxime beatae sed error enim minus tenetur?</p>
+                    </div>
+                    <div class="posting">
+                      <p>2 Jam yang lalu</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       </section>
+    </main>
+    <!-- END MAIN -->
+     <script src="../assets/js/blog.js"></script>
+  </body>
+</html>

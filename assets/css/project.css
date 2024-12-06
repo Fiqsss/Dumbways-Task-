@@ -10,12 +10,16 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+.contact 
+{
+  width: 100%;
+}
 .contact-form {
   /* background-color: #f4deb3; */
   display: flex;
   justify-content: center;
   height: auto;
-  padding: 100px 200px;
+  padding: 100px 0;
   background-color: #a8cd89;
 }
 .form-control {
@@ -122,9 +126,7 @@ label {
   border: 1px solid #ddd;
   border-radius: 20px;
   padding: 5px;
-  box-shadow: 3px 3px 0px black;
-  padding: 0px !important;
-}
+  box-shadow: 3px 3px 0px black;}
 
 .upload-input {
   flex: 1;
@@ -187,7 +189,7 @@ label {
 }
 
 .project-cart {
-  width: 90%;
+  width: 75%;
   display: flex;
   justify-content: center;
   flex-direction: column;
