@@ -44,7 +44,7 @@ function toggleMenu() {
 
 
 let projects = [];
-function addBlog(e) {
+function addProject(e) {
   e.preventDefault();
 
   let projectName = document.querySelector("#projectname").value.trim();
@@ -91,9 +91,9 @@ function getSelectedCheckboxes() {
 function renderProject() {
   console.log(projects);
 
-  let blogListElement = document.querySelector(".cart-wrapper");
+  let ProjectListElement = document.querySelector(".cart-wrapper");
 
-  blogListElement.innerHTML = firstBlogContent();
+  ProjectListElement.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
     let startDate = new Date(projects[i].startDate);
     let endDate = new Date(projects[i].endDate);
@@ -102,7 +102,7 @@ function renderProject() {
       durationMonths = 1; 
     }
     let technologiesList = projects[i].technologies.join(", ");
-    blogListElement.innerHTML += `
+    ProjectListElement.innerHTML += `
       <div class="cart">
         <div class="cart-body">
           <img
@@ -138,7 +138,7 @@ function renderProject() {
 }
 
 
-function firstBlogContent() {
+function firstProjectContent() {
   return `
   <div class="cart">
               <div class="cart-body">
@@ -173,3 +173,4 @@ function firstBlogContent() {
             </div>
   `;
 }
+

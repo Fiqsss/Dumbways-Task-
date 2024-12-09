@@ -33,7 +33,7 @@ function renderBlog() {
 
   let blogListElement = document.querySelector(".cart-wrapper");
 
-  blogListElement.innerHTML = firstBlogContent();
+  blogListElement.innerHTML = "";
   for (let i = 0; i < blogs.length; i++) {
     blogListElement.innerHTML += `
       <div style="width: 100%;" class="cart">
@@ -53,7 +53,7 @@ function renderBlog() {
                 <p>${blogs[i].content}</p>
               </div>
               <div class="posting">
-                <p>${blogs[i].time} Jam yang lalu</p>
+                <p>${blogs[i].time}</p>
               </div>
             </div>
           </div>

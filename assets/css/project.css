@@ -5,7 +5,9 @@
 html {
   scroll-behavior: smooth;
 }
-
+.note {
+  color: #ec6161;
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;
