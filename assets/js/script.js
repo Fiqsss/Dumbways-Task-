@@ -37,8 +37,8 @@
 //    link.click();
 //  });
 function toggleMenu() {
-  const menu = document.getElementById("navbarMenu");
-  menu.classList.toggle("active");
+  const navbarMenu = document.getElementById("navbarMenu");
+  navbarMenu.classList.toggle("active");
 }
 
 

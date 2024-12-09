@@ -6,24 +6,31 @@
     <title>Contact | DumbWays Task</title>
     <link rel="stylesheet" href="../assets/css/contact.css" />
     <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/img/svg/profile-svgrepo-com.svg">
+
   </head>
   <body>
     <!-- NAVBAR -->
     <section class="navbar">
       <nav>
-        <div class="navbar-brand"><span>Dumbways Task</span></div>
-        <div class="navbar-toggle" onclick="toggleMenu()">
-          <div></div>
-          <div></div>
-          <div></div>
+        <div class="navbar-wrapper">
+          <div class="navbar-brand"><a style="text-decoration: none; color: white;" href="../index.html"><span>Dumbways Task</span></a></div>
+
+          <div class="navbar-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
         <div class="navbar-menu" id="navbarMenu">
           <a href="../index.html">Home</a>
-          <a href="blog.html">Blog</a>
-          <a class="" href="project.html">My Project</a>
-
+          <a href="../views/blog.html">Blog</a>
+          <a href="../views/project.html">My Project</a>
           <!-- <a href="#contact">Project</a> -->
-          <a class="nav-btn active" href="../views/contact.html">Contact Me</a>
+          <a class="nav-btn contact-me active" href="../views/contact.html"
+            >Contact Me</a
+          >
         </div>
       </nav>
     </section>
@@ -85,6 +92,10 @@
       </div>
     </div>
     <script>
+      function toggleMenu() {
+        const navbarMenu = document.getElementById("navbarMenu");
+        navbarMenu.classList.toggle("active");
+      }
       document
         .querySelector(".contact-form-data")
         .addEventListener("submit", function (e) {
@@ -94,9 +105,7 @@
           const formData = new FormData(form);
           const data = Object.fromEntries(formData.entries());
 
-          const subject = encodeURIComponent(
-            `${data.subject}`
-          );
+          const subject = encodeURIComponent(`${data.subject}`);
           const body = encodeURIComponent(
             `Hello,
 

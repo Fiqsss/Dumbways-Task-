@@ -1,3 +1,10 @@
+function toggleMenu() {
+  const navbarMenu = document.getElementById("navbarMenu");
+  navbarMenu.classList.toggle("active");
+}
+
+
+
 let blogs = [];
 
 function addBlog(e) {
@@ -131,6 +138,14 @@ function getRelativeTime(date) {
   if (diffInDays < 7) {
     return `${diffInDays} days ago`;
   }
+
+  let diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `${diffInMonths} months ago`;
+  }
+
+  let diffInYears = Math.floor(diffInMonths / 12);
+  return `${diffInYears} years ago`;
 
   return formatDate(date);
 }

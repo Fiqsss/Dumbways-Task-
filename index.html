@@ -6,31 +6,35 @@
     <title>Home | DumbWays Task</title>
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/navbar.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/img/svg/profile-svgrepo-com.svg">
+
   </head>
   <body>
     <!-- NAVBAR -->
     <section class="navbar">
       <nav>
-        <div class="navbar-brand"><span>Dumbways Task</span></div>
-
-        <div class="navbar-toggle" onclick="toggleMenu()">
-          <div></div>
-          <div></div>
-          <div></div>
+        <div class="navbar-wrapper">
+          <div class="navbar-brand"><a style="text-decoration: none; color: white;" href="../index.html"><span>Dumbways Task</span></a></div>
+          <div class="navbar-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
         <div class="navbar-menu" id="navbarMenu">
-          <a href="index.html" class="active">Home</a>
-          <a href="views/blog.html">Blog</a>
-          <a href="views/project.html">My Project</a>
+          <a href="../index.html " class="active">Home</a>
+          <a href="../views/blog.html" >Blog</a>
+          <a href="../views/project.html">My Project</a>
           <!-- <a href="#contact">Project</a> -->
-          <a class="nav-btn" href="views/contact.html">Contact Me</a>
+          <a class="nav-btn contact-me" href="../views/contact.html">Contact Me</a>
         </div>
       </nav>
     </section>
     <!-- END NAVBAR -->
 
     <!-- PROFILE -->
-    <section id="kotak">
+    <section id="profile">
       <div class="contain">
         <div class="containt-wrapper">
           <div class="desc">
@@ -44,8 +48,8 @@
               <a href="mailto:sarofiqs@gmail.com" target="_blank">
                 <button>Contact</button> </a
               ><br />
-              <a href="assets/img/cv.jpg" download="CV_Arofiq.jpg"
-                >download CV <img width="5%" src="assets/img/svg/download.svg" alt=""
+              <a class="cv" href="assets/img/cv.jpg" download="CV_Arofiq.jpg"
+                ><span>download CV </span><img width="5%" src="assets/img/svg/download.svg" alt=""
               /></a>
             </div>
             <div class="icon">
@@ -76,5 +80,6 @@
       </div>
     </section>
     <!-- END PROFILE -->
+     <script src="assets/js/script.js"></script>
   </body>
 </html>

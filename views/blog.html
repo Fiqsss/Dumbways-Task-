@@ -6,23 +6,27 @@
     <title>Blog | DumbWays Task</title>
     <link rel="stylesheet" href="../assets/css/blog.css" />
     <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/img/svg/profile-svgrepo-com.svg">
   </head>
   <body>
     <!-- NAVBAR -->
     <section class="navbar">
       <nav>
-        <div class="navbar-brand"><span>Dumbways Task</span></div>
-        <div class="navbar-toggle" onclick="toggleMenu()">
-          <div></div>
-          <div></div>
-          <div></div>
+        <div class="navbar-wrapper">
+          <div class="navbar-brand"><a style="text-decoration: none; color: white;" href="../index.html"><span>Dumbways Task</span></a></div>
+          <div class="navbar-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
         <div class="navbar-menu" id="navbarMenu">
           <a href="../index.html">Home</a>
           <a href="../views/blog.html" class="active">Blog</a>
           <a href="../views/project.html">My Project</a>
           <!-- <a href="#contact">Project</a> -->
-          <a class="nav-btn" href="../views/contact.html">Contact Me</a>
+          <a class="nav-btn contact-me" href="../views/contact.html">Contact Me</a>
         </div>
       </nav>
     </section>
@@ -30,7 +34,7 @@
     <!-- MAIN -->
     <main>
       <!-- ADD BLOG -->
-      <section id="kotak">
+      <section id="blog" class="blog">
         <div class="contain">
           <div class="containt-wrapper">
             <div class="blog-title"><h1>Create Blog Post</h1></div>
@@ -57,14 +61,24 @@
                 <div class="upload-wrapper">
                   <label for="image-upload">Upload Image</label><br />
                   <div class="input-container">
-                    <input
-                      type="file"
-                      id="image-upload"
-                      class="upload-input"
-                      accept="image/*"
-                      name="image"
-                    />
-                    <img
+                    <div class="file-img">
+                      <label for="image-upload">
+                        <img
+                            style="margin-right: 10px"
+                            width="25px"
+                            src="../assets/img/svg/plus.svg"
+                            alt="" />
+                      </label>
+                      <input
+                        type="file"
+                        id="image-upload"
+                        class="upload-input"
+                        accept="image/*"
+                        name="image"
+                        title=" "
+                      />
+                    </div>
+                    <img class="wide-file"
                       style="margin-right: 10px"
                       width="25px"
                       src="../assets/img/svg/attachment-attach-svgrepo-com.svg"
@@ -87,6 +101,7 @@
                 </div>
               <div class="cart-wrapper">
                 <h1 class="note">"Data Belum Tersedia"</h1>
+
               </div>
             </div>
           </div>
