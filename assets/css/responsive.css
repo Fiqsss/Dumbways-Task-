@@ -65,6 +65,11 @@
 /* PROFILE */
 /* Adjustments for smaller devices (mobile) */
 @media screen and (max-width: 887px) {
+  .navbar-menu a {
+    text-align: center;
+    
+  }
+
   /* PROFILE */
   #profile .contain {
     width: 90%;
