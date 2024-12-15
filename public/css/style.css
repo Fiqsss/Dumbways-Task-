@@ -115,6 +115,7 @@ nav {
   justify-content: center;
   align-items: center;
   margin: 40px 0;
+  
 }
 
 #profile .contain .desc {
@@ -237,7 +238,7 @@ nav {
 }
 #project .input-form {
   background-color: #fada7a;
-  border: 1px solid #cce0ac;
+  border: 1px solid #fada7a;
   border-bottom: 3px solid black;
   height: 40px;
   width: 100%;
@@ -270,7 +271,7 @@ nav {
 }
 
 #project form .input-form:focus {
-  background-color: #cce0ac;
+  background-color: #fada7a;
   outline: none;
 }
 
@@ -487,7 +488,7 @@ nav {
   width: 75%;
   height: 100%;
   margin: 5rem 0;
-  background-color: seashell;
+  background-color: white;
   border-radius: 20px;
   box-shadow: 8px 9px 0px;
 }
@@ -500,6 +501,7 @@ nav {
   justify-content: center;
   align-items: center;
   margin: 40px 0;
+  background-color: white;
 }
 
 #blog .form-control {
@@ -511,13 +513,17 @@ nav {
 }
 
 #blog .form-control input.input-form {
-  background-color: seashell;
-  border: 1px solid seashell;
+  border: 1px solid white;
   border-bottom: 3px solid black;
-  height: 20px;
+  height: 40px;
   width: 100%;
   cursor: pointer;
   margin: 0 0 20px 0;
+}
+#blog .form-control input.input-form:focus {
+  background-color: white;
+  outline: none;
+
 }
 
 
@@ -558,7 +564,7 @@ nav {
   border: none;
   border-radius: 4px;
   padding: 10px 17px;
-  margin: 1px 20px 0 5px;
+  margin: 5px 20px 5px 0px;
   height: 100%;
   font-size: 14px;
   cursor: pointer;
@@ -570,14 +576,16 @@ nav {
   cursor: pointer;
 }
 #blog .form-control textarea {
-  background-color: seashell;
-  border: 1px solid seashell;
+  background-color: white;
+  border: 1px solid white;
   border-bottom: 3px solid black;
   height: 100px;
   width: 100%;
   cursor: pointer;
 }
-
+#blog .form-control textarea:focus {
+  outline: white;
+}
 #blog .form-control button
 {
   border-radius: 20px;
@@ -588,84 +596,6 @@ nav {
   font-size: 20px;
   font-weight: bold;
   width: 100%;
-}
-
-/* BLOG */
-#blog .blog-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #FFF8DE;
-  padding: 30px 0;
-}
-
-#blog .cart-title {
-  text-align: center;
-}
-
-#blog .blog-cart {
-  width: 75%;
-
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  box-shadow: 8px 8px 0px black;
-  padding: 20px;
-  border-radius: 20px;
-  background-color: #fada7a;
-  gap: 20px;
-}
-
-#blog .cart-wrapper {
-  border-radius: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-}
-
-#blog .cart {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: white;
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 5px 5px 7px;
-  margin: 0px 0px;
-}
-
-#blog .cart .cart-description {
-  margin: 0 20px;
-  width: 100%;
-}
-#blog .cart .btn-blog 
-{
-  display: flex;
-  justify-content: end;
-}
-#blog .cart .btn-blog button
-{
-  width: 20%;
-  background-color: black;
-  color: white;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-left:10px;
-}
-
-#blog .cart .btn-blog button.post
-{
-  background-color: #ec6161;
-}
-
-
-#blog.posting
-{
-  width :100%;
-  text-align: end;
 }
 
 /* END BLOG */
