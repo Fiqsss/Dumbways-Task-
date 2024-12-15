@@ -103,36 +103,31 @@ function renderProject() {
     }
     let technologiesList = projects[i].technologies.join(", ");
     ProjectListElement.innerHTML += `
-      <div class="cart">
-        <div class="cart-body">
-          <img
+      <div  style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
+              <div class="card" >
+                <img
             width="100%"
             height="200px"
             src="${projects[i].image}"
             alt=""
           />
-          <div class="cart-desc">
-            <h4>${projects[i].projectName}</h4>
-            <p>durasi: ${durationMonths} bulan</p>
-            <p class="deskripsi">
-              ${projects[i].description}
-            </p>
-            <p style="margin: 15px 10px 15px 0;">Tech: ${technologiesList}</p>
-          </div>
-          <div class="icon">
-            <img
-              src="../assets/img/svg/playstore-svgrepo-com.svg"
-              alt=""
-            />
-            <img src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
-            <img src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
-          </div>
-          <div class="btn-cart">
-            <button>Edit</button>
-            <button>Delete</button>
-          </div>
-        </div>
-      </div>
+                <div class="card-body">
+                  <h5 class="card-title">${projects[i].projectName}</h5>
+                  <p style="margin: 0;" class="card-text">durasi : ${durationMonths} bulan</p>
+                  <p style="margin: 0;" class="card-text my-2">${projects[i].description}</p>
+                  <p style="margin: 15px 10px 15px 0;">Tech: ${technologiesList}</p>
+                  <div class="icon my-3">
+                    <img width="30px" src="../assets/img/svg/playstore-svgrepo-com.svg" alt=""/>
+                    <img width="30px" src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
+                    <img width="30px" src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                  </div>
+                  <div class="btn-cart">
+                    <button>Edit</button>
+                    <button>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
     `;
   }
 }

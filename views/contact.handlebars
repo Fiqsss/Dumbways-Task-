@@ -1,0 +1,96 @@
+
+     <div id="contact">
+       <div class="contact-form">
+         <div class="form-control">
+           <div class="title">
+             <h1 style="margin-bottom: 30px">Contact Me</h1>
+           </div>
+           <form class="contact-form-data">
+             <label for="name">Name</label><br />
+             <input
+               required
+               class="input-form"
+               type="text"
+               id="name"
+               name="name"
+             /><br />
+             <label for="email">Email</label><br />
+             <input
+               required
+               class="input-form"
+               type="email"
+               id="email"
+               name="email"
+             /><br />
+   
+             <label for="phone">Phone Number</label><br />
+             <input
+               required
+               class="input-form"
+               type="tel"
+               id="phone"
+               name="phone"
+             /><br />
+   
+             <label for="subject">Subject</label><br />
+             <input
+               required
+               class="input-form"
+               type="text"
+               id="subject"
+               name="subject"
+             /><br />
+   
+             <label for="message">Your Message</label><br />
+             <textarea
+               required
+               class="input-form"
+               name="message"
+               id="message"
+             ></textarea
+             ><br />
+   
+             <div class="btn-wrapper">
+               <button type="submit">Submit</button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+    <script>
+      function toggleMenu() {
+        const navbarMenu = document.getElementById("navbarMenu");
+        navbarMenu.classList.toggle("active");
+      }
+      document
+        .querySelector(".contact-form-data")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          const subject = encodeURIComponent(`${data.subject}`);
+          const body = encodeURIComponent(
+            `Hello,
+
+My name is ${data.name}, and I would like to introduce myself. Below are my details:
+
+- Name: ${data.name}
+- Email: ${data.email}
+- Phone Number: ${data.phone}
+
+Message:
+${data.message}
+
+I look forward to connecting with you. Thank you!`
+          );
+
+          const mailtoLink = `mailto:sarofiqs@gmail.com?subject=${subject}&body=${body}`;
+
+          const link = document.createElement("a");
+          link.href = mailtoLink;
+          link.click();
+        });
+    </script>

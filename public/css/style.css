@@ -1,0 +1,841 @@
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap");
+* {
+  font-family: "Inconsolata", monospace;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.note{
+  color: red;
+}
+/* NAVBAR */
+section .navbar {
+  position: relative;
+  width: 100%;
+}
+
+nav {
+  right: 0;
+  left: 0;
+  top: 0;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #605678;
+  padding: 0.5rem 9rem;
+  color: white;
+  box-shadow: 0px 0px 15px black;
+  z-index: 10000;
+
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.navbar-menu .active {
+  background-color: #ffbf61;
+  color: black;
+}
+.navbar-menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-menu a {
+  text-decoration: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* .navbar-menu a:hover {
+    background-color: #FFBF61;
+    color: black;
+  }
+   */
+.navbar-menu a .active {
+  background-color: #555;
+}
+
+.navbar-menu .nav-btn.active {
+  background-color: #ffbf61;
+  color: black;
+}
+.navbar-menu .nav-btn {
+  background-color: #333;
+  color: white;
+  border-radius: 20px;
+}
+.navbar-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+.navbar-toggle div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 5px 0;
+}
+
+/* END NAVBAR */
+
+/* PROFILE */
+#profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ec6161;
+}
+
+#profile .contain {
+  padding: 10px auto;
+  width: 75%;
+  height: 100%;
+  margin: 5rem 0;
+  background-color: seashell;
+  border-radius: 20px;
+  box-shadow: 8px 9px 0px;
+}
+
+.containt-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+}
+
+#profile .contain .desc {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 10px 20px;
+  padding: 0px;
+  width: 40%;
+  text-align: end;
+}
+#profile .contain .btn-me {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+#profile .contain .btn-me a {
+  text-decoration: none;
+  color: black;
+}
+#profile .contain button {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 7px 30px;
+}
+
+#profile .cart-wrapper {
+  width: 50%;
+  height: 100%;
+
+  background-color: seashell;
+  border-radius: 5px;
+}
+
+#profile .icon {
+  display: flex;
+  justify-content: end;
+  margin: 20px 20px;
+  width: 100%;
+}
+
+#profile .icon a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 2px 2px 4px black;
+  margin: 0px 10px;
+}
+
+#profile .cart-wrapper img {
+  width: 20px;
+  background-size: auto;
+
+}
+#profile .cart {
+  padding: 10px;
+  background-color: white;
+  width: 60%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 7px;
+  margin: 0px auto;
+}
+
+.cart .foto {
+  width: 100%;
+  height: 200px;
+  background-image: url(../img/me.jpg);
+  background-size: cover;
+}
+
+#profile .cart .cart-body {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#profile .cart h5 {
+  font-size: 5px;
+}
+
+#profile .cart img {
+  border-radius: 10px;
+  width: 100%;
+}
+/* END PROFILE  */
+
+
+/* PROJECT */
+
+#project .contact 
+{
+  width: 100%;
+}
+#project .contact-form {
+  /* background-color: #f4deb3; */
+  display: flex;
+  justify-content: center;
+  height: auto;
+  padding: 100px 0;
+  background-color: #a8cd89;
+}
+#project .form-control {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
+}
+#project .form-control h1 {
+  text-align: center;
+}
+#project form label {
+  font-weight: bold;
+  cursor: pointer;
+}
+#project .input-form {
+  background-color: #fada7a;
+  border: 1px solid #cce0ac;
+  border-bottom: 3px solid black;
+  height: 40px;
+  width: 100%;
+  cursor: pointer;
+}
+#project form select {
+  box-shadow: 4px 4px 0px black;
+  background-color: #81bfda;
+  padding: 3px;
+
+  border-radius: 20px;
+  cursor: pointer;
+}
+#project form select:hover {
+  box-shadow: 2px 2px 0px black;
+}
+
+#project form .dateinput {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+#project form .dateinput div {
+  width: 50%;
+  padding: 0 10px;
+  margin-bottom: 50px;
+}
+#project form .dateinput input {
+  width: 100%;
+}
+
+#project form .input-form:focus {
+  background-color: #cce0ac;
+  outline: none;
+}
+
+#project form textarea {
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+#project form .checkbox-wrapper {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#project form .checkbox-wrapper .checkbox {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  width: 50%;
+  margin: 7px 0px;
+}
+
+#project form .checkbox-wrapper .checkbox input {
+  border-radius: 30px;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  box-shadow: 1px 1px 0px #b3c8cf;
+  border-radius: 20px !important;
+}
+
+#project .upload-wrapper {
+  margin-top: 20px;
+}
+
+#project label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+#project .input-container {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 3px 3px 0px black;}
+
+#project .upload-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0px;
+  margin: 0px;
+  height: 40px;
+  background-color: transparent;
+}
+
+#project .upload-icon {
+  margin-left: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#project .upload-input::-webkit-file-upload-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  height: 100%;
+  padding: 0px 17px;
+  margin: 1px 20px 0 0;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+#project .contact-form .form-control button {
+  border-radius: 20px;
+  padding: 10px 10px;
+  box-shadow: 4px 4px 0px black;
+  background-color: #c6e7ff;
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+}
+
+#project .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#project .contact-form .form-control button:hover {
+  box-shadow: 2px 2px 0px black;
+}
+
+#project .project-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ec6161;
+  padding: 30px 0;
+}
+
+#project .project-cart {
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
+  gap: 20px;
+}
+#project .title-project
+{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 2rem;
+}
+/* #project .cart-wrapper {
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+} */
+/* #project .card-wrap {
+  padding: 15px;
+  background-color: white;
+  width: 280px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0px;
+  margin: 0px 0px;
+} */
+
+#project .cart .cart-body {
+  text-align: center;
+}
+#project .cart .cart-body img{
+  border-radius: 10px;
+}
+#project .cart .cart-body .icon
+{
+  text-align: start;
+}
+#project .cart .cart-body .icon img
+{
+  width: 25px;
+  margin: 5px 2px;
+}
+#project .cart-desc
+{
+  text-align: start;
+}
+#project .cart-desc h4
+{
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+#project .cart-desc p
+{
+  margin: 3px 0;
+  padding: 0;
+  font-size: 11px;
+}
+
+#project .btn-cart
+{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+#project .btn-cart button
+{
+  width: 48%;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  padding: 5px 0;
+}
+
+
+/* END PROJECT */
+
+
+
+/* BLOG */
+
+#blog {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ec6161;
+}
+
+#blog .contain {
+  padding: 10px auto;
+  width: 75%;
+  height: 100%;
+  margin: 5rem 0;
+  background-color: seashell;
+  border-radius: 20px;
+  box-shadow: 8px 9px 0px;
+}
+
+#blog .containt-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+}
+
+#blog .form-control {
+  width: 100%;
+}
+
+#blog .form-control form {
+  padding: 0 30px;
+}
+
+#blog .form-control input.input-form {
+  background-color: seashell;
+  border: 1px solid seashell;
+  border-bottom: 3px solid black;
+  height: 20px;
+  width: 100%;
+  cursor: pointer;
+  margin: 0 0 20px 0;
+}
+
+
+#blog .upload-wrapper {
+  margin-top: 20px;
+}
+
+#blog .input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffbf61;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 3px 3px 0px black;
+  padding: 0px !important;
+  height: 50px;
+  margin-top: 20px;
+}
+
+#blog .upload-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;
+}
+
+#blog .file-img label 
+{
+  display: none;
+}
+#blog .upload-input::-webkit-file-upload-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 17px;
+  margin: 1px 20px 0 5px;
+  height: 100%;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+#blog .upload-icon {
+  margin-left: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#blog .form-control textarea {
+  background-color: seashell;
+  border: 1px solid seashell;
+  border-bottom: 3px solid black;
+  height: 100px;
+  width: 100%;
+  cursor: pointer;
+}
+
+#blog .form-control button
+{
+  border-radius: 20px;
+  padding: 10px 10px;
+  box-shadow: 4px 4px 0px black;
+  background-color: #c6e7ff;
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+}
+
+/* BLOG */
+#blog .blog-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #FFF8DE;
+  padding: 30px 0;
+}
+
+#blog .cart-title {
+  text-align: center;
+}
+
+#blog .blog-cart {
+  width: 75%;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
+  gap: 20px;
+}
+
+#blog .cart-wrapper {
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+#blog .cart {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: white;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 7px;
+  margin: 0px 0px;
+}
+
+#blog .cart .cart-description {
+  margin: 0 20px;
+  width: 100%;
+}
+#blog .cart .btn-blog 
+{
+  display: flex;
+  justify-content: end;
+}
+#blog .cart .btn-blog button
+{
+  width: 20%;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-left:10px;
+}
+
+#blog .cart .btn-blog button.post
+{
+  background-color: #ec6161;
+}
+
+
+#blog.posting
+{
+  width :100%;
+  text-align: end;
+}
+
+/* END BLOG */
+
+
+/* CONTACT */
+#contact .contact-form {
+  background-color: #CDC1FF;
+  display: flex;
+  justify-content: center;
+  padding: 70px 0px;
+}
+#contact .form-control {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
+  margin-top: 30px;
+}
+#contact .form-control h1 {
+  text-align: center;
+}
+#contact form label {
+  font-weight: bold;
+  cursor: pointer;
+  margin: 25px 0 0 0;
+}
+#contact .input-form {
+  background-color: #fada7a;
+  border: 1px solid #fada7a;
+  border-bottom: 3px solid black;
+  height: 20px;
+  width: 100%;
+  cursor: pointer;
+}
+#contact form select {
+  box-shadow: 4px 4px 0px black;
+  background-color: #81bfda;
+  padding: 3px;
+
+  border-radius: 20px;
+  cursor: pointer;
+}
+#contact form select:hover {
+  box-shadow: 2px 2px 0px black;
+}
+
+#contact form .dateinput {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+#contact form .dateinput div {
+  width: 50%;
+  padding: 0 10px;
+  margin-bottom: 50px;
+}
+#contact form .dateinput input {
+  width: 100%;
+}
+
+#contact form .input-form:focus {
+  background-color: #fada7a;
+  outline: none;
+}
+
+#contact form textarea {
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+#contact form .checkbox-wrapper {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#contact form .checkbox-wrapper .checkbox {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  width: 50%;
+  margin: 7px 0px;
+}
+
+#contact form .checkbox-wrapper .checkbox input {
+  border-radius: 30px;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  box-shadow: 1px 1px 0px #b3c8cf;
+  border-radius: 20px !important;
+}
+
+/* upload */
+#contact .upload-wrapper {
+  margin-top: 20px;
+}
+
+#contact label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+#contact .input-container {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 3px 3px 0px black;
+  padding: 0px !important;
+}
+
+#contact .upload-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0px;
+  margin: 0px;
+  height: 40px;
+  background-color: transparent;
+}
+
+#contact .upload-icon {
+  margin-left: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#contact .upload-input::-webkit-file-upload-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  height: 100%;
+  padding: 0px 17px;
+  margin: 1px 20px 0 0;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+#contact .contact-form .form-control button {
+  border-radius: 20px;
+  padding: 10px 10px;
+  box-shadow: 4px 4px 0px black;
+  background-color: #a8cd89;
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+}
+
+#contact .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#contact .contact-form .form-control button:hover {
+  box-shadow: 2px 2px 0px black;
+}
+
+/* END CONTACT */

@@ -9,6 +9,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-direction: row;
   }
   .navbar-menu.active {
@@ -79,6 +80,7 @@
     width: 100%;
   }
   #profile .containt-wrapper .desc {
+    text-align: center;
     margin: 50px 0;
     width: 90%;
   }
@@ -201,6 +203,7 @@
     width: 100%;
   }
   #profile .containt-wrapper .desc {
+    text-align: center;
     margin: 50px 0;
     width: 90%;
   }
