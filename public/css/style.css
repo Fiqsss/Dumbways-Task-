@@ -108,7 +108,7 @@ nav {
   box-shadow: 8px 9px 0px;
 }
 
-.containt-wrapper {
+#profile .containt-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
@@ -195,8 +195,9 @@ nav {
   margin-top: 10px;
 }
 
-#profile .cart h5 {
-  font-size: 5px;
+#profile .cart h4 {
+  font-size: 20px;
+  margin-top: 10px;
 }
 
 #profile .cart img {
@@ -404,21 +405,21 @@ nav {
   font-weight: bold;
   font-size: 2rem;
 }
-/* #project .cart-wrapper {
+#project .cart-wrapper {
   border-radius: 5px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
-} */
-/* #project .card-wrap {
+}
+#project .card-wrap {
   padding: 15px;
   background-color: white;
   width: 280px;
   border-radius: 10px;
   box-shadow: 5px 5px 0px;
   margin: 0px 0px;
-} */
+}
 
 #project .cart .cart-body {
   text-align: center;
@@ -503,6 +504,16 @@ nav {
   margin: 40px 0;
   background-color: white;
 }
+
+#blog .blog-wrapper
+{
+  background-color: white;
+  min-width: 80%;
+  padding: 15px 15px;
+  border-radius: 30px;
+  box-shadow: 5px 5px 5px black;
+}
+
 
 #blog .form-control {
   width: 100%;
@@ -597,7 +608,74 @@ nav {
   font-weight: bold;
   width: 100%;
 }
-
+/* BLOG */
+#blog .blog-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #FFF8DE;
+  padding: 30px 0;
+}
+#blog .cart-title {
+  text-align: center;
+}
+#blog .blog-cart {
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
+  gap: 20px;
+}
+#blog .cart-wrapper {
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+#blog .cart {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: white;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 7px;
+  margin: 0px 0px;
+}
+#blog .cart .cart-description {
+  margin: 0 20px ;
+  width: 100%;
+}
+#blog .cart .btn-blog 
+{
+  display: flex;
+  justify-content: end;
+}
+#blog .cart .btn-blog button
+{
+  width: 20%;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-left:10px;
+}
+#blog .cart .btn-blog button.post
+{
+  background-color: #ec6161;
+}
+#blog.posting
+{
+  width :100%;
+  text-align: end;
+}
 /* END BLOG */
 
 

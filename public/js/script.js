@@ -117,9 +117,9 @@ function renderProject() {
                   <p style="margin: 0;" class="card-text my-2">${projects[i].description}</p>
                   <p style="margin: 15px 10px 15px 0;">Tech: ${technologiesList}</p>
                   <div class="icon my-3">
-                    <img width="30px" src="../assets/img/svg/playstore-svgrepo-com.svg" alt=""/>
-                    <img width="30px" src="../assets/img/svg/android-svgrepo-com.svg" alt="" />
-                    <img width="30px" src="../assets/img/svg/java-svgrepo-com.svg" alt="" />
+                    <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt=""/>
+                    <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
+                    <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
                   </div>
                   <div class="btn-cart">
                     <button>Edit</button>

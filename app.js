@@ -1,8 +1,18 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+const {Pool} = require("pg");
 
 
 const app = express();
+
+const pool = new Pool({
+  user: "postgres", 
+  host: "localhost",    
+  database: "dumbwaysTask", 
+  password: "111", 
+  port: 7000, 
+});
+
 
 app.engine("hbs", exphbs.engine(
   {
@@ -44,6 +54,24 @@ app.get("/contact", (req, res) => {
     title: "Contact | Dumbways Task",
   });
 });
+
+app.get("/testimonial", (req, res) => {
+  res.render("testimonial", {
+    isTestimonial: true,
+    title: "Testimonial | Dumbways Task",
+  });
+});
+
+app.get("/api/testimonials", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM testimonial");
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 app.get("*", (req, res) => {
   res.render("partials/404");

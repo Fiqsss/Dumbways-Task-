@@ -1,78 +1,49 @@
- <main>
-      <!-- ADD BLOG -->
-      <section id="blog" class="blog">
-        <div class="contain">
-          <div class="containt-wrapper">
-            <div class="blog-title"><h1>Create Blog Post</h1></div>
-            <div class="form-control">
-              <form action="">
-                <label for="title">Title</label><br />
-                <input
-                  required
-                  class="input-form"
-                  type="text"
-                  id="title"
-                  name="title"
-                /><br />
-                <label for="content">Content</label><br />
-                <textarea
-                  required
-                  class="input-form"
-                  name="content"
-                  id="content"
-                  cols="30"
-                  rows="10"
-                ></textarea
-                ><br />
-                <div class="upload-wrapper">
-                  <label for="image-upload">Upload Image</label><br />
-                  <div class="input-container">
-                    <div class="file-img">
-                      <label for="image-upload">
-                        <img
-                            style="margin-right: 10px"
-                            width="25px"
-                            src="   /img/svg/plus.svg"
-                            alt="" />
-                      </label>
-                      <input
-                        type="file"
-                        id="image-upload"
-                        class="upload-input"
-                        accept="image/*"
-                        name="image"
-                        title=" "
-                      />
-                    </div>
-                    <img class="wide-file"
-                      style="margin-right: 10px"
-                      width="25px"
-                      src="   /img/svg/attachment-attach-svgrepo-com.svg"
-                      alt=""
-                    />
-                  </div>
-                </div>
-                <button onclick="addBlog(event)" class="btn-submit">Submit</button>
-              </form>
-          </div>
+<main>
+  <!-- ADD BLOG -->
+  <section id="blog" class="blog">
+    <div class="contain">
+      <div class="containt-wrapper">
+        <div class="blog-title">
+          <h1>Create Blog Post</h1>
         </div>
-      </section>
-      <!-- END ADD BLOG -->
-       <section id="blog">
-        <div id="blog" class="blog-wrapper">
-          <div class="blog-wrapper">
-            <div class="blog-cart">
-              <div class="cart-title">
-                <h1>My Blog</h1>
+        <div class="form-control">
+          <form action="">
+            <label for="title">Title</label><br />
+            <input required class="input-form" type="text" id="title" name="title" /><br />
+            <label for="content">Content</label><br />
+            <textarea required class="input-form" name="content" id="content" cols="30" rows="10"></textarea><br />
+            <div class="upload-wrapper">
+              <label for="image-upload">Upload Image</label><br />
+              <div class="input-container">
+                <div class="file-img">
+                  <label for="image-upload">
+                    <img style="margin-right: 10px" width="25px" src="   /img/svg/plus.svg" alt="" />
+                  </label>
+                  <input type="file" id="image-upload" class="upload-input" accept="image/*" name="image" title=" " />
                 </div>
-              <div class="cart-wrapper">
-                <h1 class="note">"Data Belum Tersedia"</h1>
-
+                <img class="wide-file" style="margin-right: 10px" width="25px"
+                  src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" />
               </div>
             </div>
+            <button onclick="addBlog(event)" class="btn-submit">Submit</button>
+          </form>
+        </div>
+      </div>
+  </section>
+  <!-- END ADD BLOG -->
+  <section id="blog">
+    <div class="blog-wrapper">
+        <div class="blog-cart">
+          <div class="cart-title">
+            <h1>My Blog</h1>
+          </div>
+          <div class="cart-wrapper">
+            <h1 class="note">"Data Belum Tersedia"</h1>
+
           </div>
         </div>
-       </section>
-    </main>
-    <!-- END MAIN -->
-     <script src="   /js/blog.js"></script>
+    </div>
+  </section>
+</main>
+<!-- END MAIN -->
+<script src="/js/blog.js"></script>
