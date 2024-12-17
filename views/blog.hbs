@@ -7,7 +7,7 @@
           <h1>Create Blog Post</h1>
         </div>
         <div class="form-control">
-          <form action="">
+          <form action="/addBlog" method="post" class="blog-form">
             <label for="title">Title</label><br />
             <input required class="input-form" type="text" id="title" name="title" /><br />
             <label for="content">Content</label><br />
@@ -21,11 +21,12 @@
                   </label>
                   <input type="file" id="image-upload" class="upload-input" accept="image/*" name="image" title=" " />
                 </div>
-                <img class="wide-file" style="margin-right: 10px" width="25px"
-                  src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" />
+                {{!-- <img class="wide-file" style="margin-right: 10px" width="25px"
+                  src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" /> --}}
               </div>
             </div>
-            <button onclick="addBlog(event)" class="btn-submit">Submit</button>
+            <button class="btn-submit">Submit</button>
+            {{!-- <button onclick="addBlog(event)" class="btn-submit">Submit</button> --}}
           </form>
         </div>
       </div>
@@ -33,15 +34,39 @@
   <!-- END ADD BLOG -->
   <section id="blog">
     <div class="blog-wrapper">
-        <div class="blog-cart">
-          <div class="cart-title">
-            <h1>My Blog</h1>
-          </div>
-          <div class="cart-wrapper">
-            <h1 class="note">"Data Belum Tersedia"</h1>
-
-          </div>
+      <div class="blog-cart">
+        <div class="cart-title">
+          <h1>My Blog</h1>
         </div>
+        <div class="cart-wrapper">
+          {{!-- <h1 class="note">"Data Belum Tersedia"</h1> --}}
+          {{#each blogs}}
+          <div style="width: 100%;" class="cart">
+            <div class="cart-image">
+              <img width="300" src="/uploads/{{this.image}}" alt="{{this.title}}">
+            </div>
+            <div class="cart-description">
+              <div class="btn-blog">
+                <button class="edit">Edit Post</button>
+                <button class="post">Post Blog</button>
+              </div>
+              <div class="title-blog">
+                <h1>{{this.title}}</h1>
+              </div>
+              <div class="containt-blog">
+                <p>{{this.postDate}} | 3 Comments</p>
+                <p>{{this.content}}</p>
+              </div>
+              <div class="posting">
+                <p>{{this.time}}</p>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+
+
+        </div>
+      </div>
     </div>
   </section>
 </main>
