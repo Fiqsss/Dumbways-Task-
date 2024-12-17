@@ -10,7 +10,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
-.note{
+.note {
   color: red;
 }
 /* NAVBAR */
@@ -32,7 +32,6 @@ nav {
   color: white;
   box-shadow: 0px 0px 15px black;
   z-index: 10000;
-
 }
 
 .navbar-brand {
@@ -115,7 +114,6 @@ nav {
   justify-content: center;
   align-items: center;
   margin: 40px 0;
-  
 }
 
 #profile .contain .desc {
@@ -172,7 +170,6 @@ nav {
 #profile .cart-wrapper img {
   width: 20px;
   background-size: auto;
-
 }
 #profile .cart {
   padding: 10px;
@@ -206,11 +203,9 @@ nav {
 }
 /* END PROFILE  */
 
-
 /* PROJECT */
 
-#project .contact 
-{
+#project .contact {
   width: 100%;
 }
 #project .contact-form {
@@ -325,7 +320,8 @@ nav {
   border: 1px solid #ddd;
   border-radius: 20px;
   padding: 5px;
-  box-shadow: 3px 3px 0px black;}
+  box-shadow: 3px 3px 0px black;
+}
 
 #project .upload-input {
   flex: 1;
@@ -397,8 +393,7 @@ nav {
   background-color: #fada7a;
   gap: 20px;
 }
-#project .title-project
-{
+#project .title-project {
   text-align: center;
   margin: 0;
   padding: 0;
@@ -424,43 +419,36 @@ nav {
 #project .cart .cart-body {
   text-align: center;
 }
-#project .cart .cart-body img{
+#project .cart .cart-body img {
   border-radius: 10px;
 }
-#project .cart .cart-body .icon
-{
+#project .cart .cart-body .icon {
   text-align: start;
 }
-#project .cart .cart-body .icon img
-{
+#project .cart .cart-body .icon img {
   width: 25px;
   margin: 5px 2px;
 }
-#project .cart-desc
-{
+#project .cart-desc {
   text-align: start;
 }
-#project .cart-desc h4
-{
+#project .cart-desc h4 {
   margin: 10px 0 0 0;
   padding: 0;
 }
-#project .cart-desc p
-{
+#project .cart-desc p {
   margin: 3px 0;
   padding: 0;
   font-size: 11px;
 }
 
-#project .btn-cart
-{
+#project .btn-cart {
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
 }
-#project .btn-cart button
-{
+#project .btn-cart button {
   width: 48%;
   background-color: black;
   color: white;
@@ -468,10 +456,7 @@ nav {
   padding: 5px 0;
 }
 
-
 /* END PROJECT */
-
-
 
 /* BLOG */
 
@@ -505,15 +490,13 @@ nav {
   background-color: white;
 }
 
-#blog .blog-wrapper
-{
+#blog .blog-wrapper {
   background-color: white;
   min-width: 80%;
   padding: 15px 15px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px black;
 }
-
 
 #blog .form-control {
   width: 100%;
@@ -534,9 +517,7 @@ nav {
 #blog .form-control input.input-form:focus {
   background-color: white;
   outline: none;
-
 }
-
 
 #blog .upload-wrapper {
   margin-top: 20px;
@@ -565,8 +546,7 @@ nav {
   background-color: transparent;
 }
 
-#blog .file-img label 
-{
+#blog .file-img label {
   display: none;
 }
 #blog .upload-input::-webkit-file-upload-button {
@@ -597,8 +577,7 @@ nav {
 #blog .form-control textarea:focus {
   outline: white;
 }
-#blog .form-control button
-{
+#blog .form-control button {
   border-radius: 20px;
   padding: 10px 10px;
   box-shadow: 4px 4px 0px black;
@@ -615,7 +594,7 @@ nav {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #FFF8DE;
+  background-color: #fff8de;
   padding: 30px 0;
 }
 #blog .cart-title {
@@ -650,38 +629,33 @@ nav {
   margin: 0px 0px;
 }
 #blog .cart .cart-description {
-  margin: 0 20px ;
+  margin: 0 20px;
   width: 100%;
 }
-#blog .cart .btn-blog 
-{
+#blog .cart .btn-blog {
   display: flex;
   justify-content: end;
 }
-#blog .cart .btn-blog button
-{
+#blog .cart .btn-blog button {
   width: 20%;
   background-color: black;
   color: white;
   border-radius: 10px;
   padding: 5px 10px;
-  margin-left:10px;
+  margin-left: 10px;
 }
-#blog .cart .btn-blog button.post
-{
+#blog .cart .btn-blog button.post {
   background-color: #ec6161;
 }
-#blog.posting
-{
-  width :100%;
+#blog.posting {
+  width: 100%;
   text-align: end;
 }
 /* END BLOG */
 
-
 /* CONTACT */
 #contact .contact-form {
-  background-color: #CDC1FF;
+  background-color: #cdc1ff;
   display: flex;
   justify-content: center;
   padding: 70px 0px;
@@ -847,3 +821,45 @@ nav {
 }
 
 /* END CONTACT */
+
+/* START TESTIMONY */
+#testimony {
+  padding: 100px;
+  background-color: #5db996;
+  min-height: 100vh;
+}
+
+#testimony .testimony-wrapper {
+  background-color: #e3f0af;
+  box-shadow: 10px 10px 10px black;
+  border-radius: 30px;
+  padding: 20px;
+}
+/* END TESTIMONY */
+
+/* DETAIL PROJECT */
+#detailprojects {
+  padding: 7rem 0 0 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ff748b;
+}
+
+#detailprojects .container {
+  min-height: 80%;
+  border-radius: 30px;
+  background-color: white;
+  box-shadow: 7px 7px 0px black;
+}
+
+#detailprojects .container img{
+  border-radius: 30px;
+  box-shadow: 5px 5px 0px black;
+}
+
+#detailprojects .container .btn-wrapper button{
+  border-radius: 30px;
+  color: white;
+}
+
+/* END PROJECT */

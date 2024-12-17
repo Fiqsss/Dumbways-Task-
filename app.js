@@ -1,31 +1,35 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const {Pool} = require("pg");
-
+const { Pool } = require("pg");
 
 const app = express();
 
 const pool = new Pool({
-  user: "postgres", 
-  host: "localhost",    
-  database: "dumbwaysTask", 
-  password: "111", 
-  port: 7000, 
+  user: "postgres",
+  host: "localhost",
+  database: "dumbwaysTask",
+  password: "111",
+  port: 7000,
 });
 
-
-app.engine("hbs", exphbs.engine(
-  {
+app.engine(
+  "hbs",
+  exphbs.engine({
     extname: ".hbs",
-  }
-));
+  })
+);
 
 app.set("view engine", "hbs");
 
-// app.set("views", "./views"); //
+// app.set("views", "./views");
+const path = require("path");
+const { error } = require("console");
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "./public")));
 
+// ROUTING START
+// <----------------------------------------------------------------------------->
+// <----------------------------------------------------------------------------->
 
 app.get("/", (req, res) => {
   res.render("home", {
@@ -34,12 +38,16 @@ app.get("/", (req, res) => {
   });
 });
 
+// <-------------------------------->
+
 app.get("/blog", (req, res) => {
   res.render("blog", {
     isBlog: true,
     title: "Blog | Dumbways Task",
   });
 });
+
+// <-------------------------------->
 
 app.get("/project", (req, res) => {
   res.render("project", {
@@ -48,12 +56,15 @@ app.get("/project", (req, res) => {
   });
 });
 
+// <-------------------------------->
+
 app.get("/contact", (req, res) => {
   res.render("contact", {
     isContact: true,
     title: "Contact | Dumbways Task",
   });
 });
+// <-------------------------------->
 
 app.get("/testimonial", (req, res) => {
   res.render("testimonial", {
@@ -62,9 +73,11 @@ app.get("/testimonial", (req, res) => {
   });
 });
 
+// <----------------------------------------------------------------------------->
+// <----------------------------------------------------------------------------->
 app.get("/api/testimonials", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM testimonial");
+    const result = await pool.query("SELECT * FROM testimonials");
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err.message);
@@ -72,10 +85,42 @@ app.get("/api/testimonials", async (req, res) => {
   }
 });
 
+app.get("/api/projects", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM projects");
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: "Internal Error" });
+  }
+});
+
+app.get("/project/:title", async (req, res) => {
+
+  const { title } = req.params;
+
+  try {
+    const result = await pool.query("SELECT * FROM projects WHERE title = $1", [title]);
+    if (result.rows.length > 0) {
+      const data = result.rows[0];
+      res.render("partials/detailproject", { projects: data });
+    } else {
+      res.status(404).render("partials/404");
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).render("partials/404");
+  }
+});
+
+// <----------------------------------------------------------------------------->
+// <----------------------------------------------------------------------------->
 
 app.get("*", (req, res) => {
   res.render("partials/404");
-})
+});
+
+
 app.listen(9000, () => {
-  console.log("listening in http://localhost:9000");
+  console.log("berjalan di http://localhost:9000");
 });

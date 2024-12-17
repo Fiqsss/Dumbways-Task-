@@ -43,8 +43,7 @@
           <label for="image-upload">Upload Image</label><br />
           <div class="input-container">
             <input type="file" id="image-upload" class="upload-input" accept="image/*" />
-            <img style="margin-right: 10px" width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg"
-              alt="" />
+            <img style="margin-right: 10px" width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" />
           </div>
         </div>
         <div class="btn-wrapper">
@@ -60,9 +59,87 @@
       <div class="title-project">
         <h1>My Project</h1>
       </div>
-      <div class="cart-wrapper row justify-content-center mt-4">
-        <h3 class="note text-center">Data Belum Tersedia</h3>
+      <div id="projects-content" class="cart-wrapper row justify-content-center mt-4">
+        {{!-- <h3 class="note text-center">"Data Belum Tersedia"</h3> --}}
+        {{!-- <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
+          <div class="card">
+            <img width="100%" height="200px" src="${projects[i].image}" alt="" />
+            <div class="card-body">
+              <h5 class="card-title">${projects[i].projectName}</h5>
+              <p style="margin: 0;" class="card-text">durasi : ${durationMonths} bulan</p>
+              <p style="margin: 0;" class="card-text my-2">${projects[i].description}</p>
+              <p style="margin: 15px 10px 15px 0;">Tech: ${technologiesList}</p>
+              <div class="icon my-3">
+                <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
+                <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
+                <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
+              </div>
+              <div class="btn-cart">
+                <button>Edit</button>
+                <button>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div> --}}
       </div>
     </div>
   </div>
 </section>
+<script>
+
+  const elementHTML = document.getElementById("projects-content");
+
+  async function fetchProjects() {
+    try {
+      const response = await fetch('/api/projects');
+      if (!response.ok) {
+        throw new Error('Failed to fetch projects');
+      }
+      const projects = await response.json();
+      return projects;
+    } catch (err) {
+      console.log(err.message);
+      return [];
+    }
+
+  }
+
+  function renderProjects(projects) {
+    projects.forEach((project) => {
+      const projectCart = `
+          <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
+            <a class="text-decoration-none" href="/project/${project.title}">
+                <div class="card">
+                  <img width="100%" height="200px" src="${project.img}" alt="" />
+                  <div class="card-body">
+                    <h5 class="card-title">${project.title}</h5>
+                    <p style="margin: 0;" class="card-text">durasi : ${project.duration}</p>
+                    <p style="margin: 0;" class="card-text my-2">${project.description}</p>
+                    <p style="margin: 15px 10px 15px 0;">Tech: ${project.tech_stack}</p>
+                    <div class="icon my-3">
+                      <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
+                      <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
+                      <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
+                    </div>
+                    <div class="btn-cart">
+                      <button>Edit</button>
+                      <button>Delete</button>
+                    </div>
+                  </div>
+                </div>
+            </a>
+          </div>
+        `;
+      elementHTML.innerHTML += projectCart;
+    })
+  }
+
+  async function showAllProjects() {
+    const projects = await fetchProjects();
+    //elementHTML.innerHTML 
+
+    renderProjects(projects);
+  }
+  document.addEventListener('DOMContentLoaded', fetchProjects);
+  showAllProjects();
+</script>
