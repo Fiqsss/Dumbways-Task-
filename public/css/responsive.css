@@ -1,5 +1,10 @@
 /* Responsive Navbar */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1187px) {
+  #blog .cart .btn-blog a{
+    width: 30%;
+  }
+}
+@media screen and (max-width: 1000px) {
   nav {
     flex-direction: column;
     padding: 0.5rem 2rem;
@@ -60,6 +65,15 @@
     display: flex; /* Tampilkan menu saat aktif */
     border-radius: 20px;
     background-color: seashell;
+  }
+
+  #blog .cart .btn-blog {
+    width: 100%;
+    justify-content: space-between;
+  }
+  #blog .cart .btn-blog a {
+    width: 45%;
+    margin: 0 0 10px 0;
   }
 }
 
@@ -179,7 +193,7 @@
     justify-content: space-between;
     width: 100%;
   }
-  #blog .cart .btn-blog button{
+  #blog .cart .btn-blog a{
     width: 45%;
     margin: 10px 0;
   }
@@ -295,7 +309,7 @@
     display: flex;
     justify-content: space-between;
   }
-  #blog .cart .btn-blog button {
+  #blog .cart .btn-blog a {
     width: 48%;
     margin: 0;
   }

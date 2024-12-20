@@ -1,74 +1,30 @@
-<section id="project">
-  <div class="contact-form">
-    <div class="form-control">
-      <div class="title">
-        <h1 style="margin-bottom: 30px">Add My Project</h1>
+<section id="project" class="mt-5">
+  <div class="project-wrapper d-flex justify-content-center flex-direction-column">
+    <div class="search-wrapper rounded-2 d-flex justify-content-between ">
+      <div class="search w-100 d-flex justify-content-start">
+        <form class="w-100 d-flex  m-0">
+          <input class="form-control me-2 bg-white" type="search" placeholder="Search" aria-label="Search">
+          <button style="background-color: #78B3CE;" class="btn btn-search text-white mx-auto"
+            type="submit">Search</button>
+        </form>
+        <a class="btn text-white addblog d-flex flex-column justify-content-center" href="/addproject"
+          type="submit"><span>Add Blog</span></a>
       </div>
-      <form class="project-form">
-        <label for="projectname">Project Name</label><br />
-        <input required class="input-form" type="text" id="projectname" name="projectname" /><br />
-        <div class="dateinput">
-          <div>
-            <label for="startdate">Start Date</label><br />
-            <input required class="input-form" type="date" id="startdate" name="startdate" /><br />
-          </div>
-
-          <div>
-            <label for="enddate">End Date</label><br />
-            <input required class="input-form" type="date" id="enddate" name="enddate" /><br />
-          </div>
-        </div>
-        <label for="description">Description</label><br />
-        <textarea required class="input-form" name="description" id="description"></textarea><br />
-        <label for="technologies">Technologies</label><br />
-        <div class="checkbox-wrapper">
-          <div class="checkbox">
-            <input type="checkbox" id="nodejs" name="technologies" value="Node.js" />
-            <label for="nodejs">Node.js</label><br />
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" id="reactjs" name="technologies" value="React.js" />
-            <label for="reactjs">React.js</label><br />
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" id="nextjs" name="technologies" value="Next.js" />
-            <label for="nextjs">Next.js</label><br />
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" id="typescript" name="technologies" value="TypeScript" />
-            <label for="typescript">TypeScript</label><br />
-          </div>
-        </div>
-        <div class="upload-wrapper">
-          <label for="image-upload">Upload Image</label><br />
-          <div class="input-container">
-            <input type="file" id="image-upload" class="upload-input" accept="image/*" />
-            <img style="margin-right: 10px" width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" />
-          </div>
-        </div>
-        <div class="btn-wrapper">
-          <button onclick="addProject(event)" type="submit">Submit</button>
-        </div>
-      </form>
     </div>
-  </div>
-</section>
-<section id="project">
-  <div class="project-wrapper">
     <div class="project-cart">
       <div class="title-project">
         <h1>My Project</h1>
       </div>
       <div id="projects-content" class="cart-wrapper row justify-content-center mt-4">
-        {{!-- <h3 class="note text-center">"Data Belum Tersedia"</h3> --}}
-        {{!-- <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
+        {{#each projects}}
+        <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
           <div class="card">
             <img width="100%" height="200px" src="${projects[i].image}" alt="" />
             <div class="card-body">
-              <h5 class="card-title">${projects[i].projectName}</h5>
-              <p style="margin: 0;" class="card-text">durasi : ${durationMonths} bulan</p>
-              <p style="margin: 0;" class="card-text my-2">${projects[i].description}</p>
-              <p style="margin: 15px 10px 15px 0;">Tech: ${technologiesList}</p>
+              <h5 class="card-title">{{this.projectname}}</h5>
+              <p style="margin: 0;" class="card-text">durasi : {{this.duration}}</p>
+              <p style="margin: 0;" class="card-text my-2">{{this.description}}</p>
+              <p style="margin: 15px 10px 15px 0;">{{this.technologies}}</p>
               <div class="icon my-3">
                 <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
                 <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
@@ -80,29 +36,15 @@
               </div>
             </div>
           </div>
-        </div> --}}
+        </div>
+        {{else}}
+        <h3 class="note text-center">"Data Belum Tersedia"</h3>
+        {{/each}}
       </div>
     </div>
   </div>
 </section>
 <script>
-
-  const elementHTML = document.getElementById("projects-content");
-
-  async function fetchProjects() {
-    try {
-      const response = await fetch('/api/projects');
-      if (!response.ok) {
-        throw new Error('Failed to fetch projects');
-      }
-      const projects = await response.json();
-      return projects;
-    } catch (err) {
-      console.log(err.message);
-      return [];
-    }
-
-  }
 
   function renderProjects(projects) {
     projects.forEach((project) => {

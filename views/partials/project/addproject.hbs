@@ -1,0 +1,55 @@
+<section id="project">
+  <div class="contact-form">
+    <div class="form-control">
+      <div class="title">
+        <h1 style="margin-bottom: 30px">Add My Project</h1>
+      </div>
+      <form action="/addproject" method="post" class="project-form" enctype="multipart/form-data">
+        <label for="projectname">Project Name</label><br />
+        <input required class="input-form" type="text" id="projectname" name="projectname" /><br />
+        <div class="dateinput">
+          <div>
+            <label for="startdate">Start Date</label><br />
+            <input required class="input-form" type="date" id="startdate" name="startdate" /><br />
+          </div>
+
+          <div>
+            <label for="enddate">End Date</label><br />
+            <input required class="input-form" type="date" id="enddate" name="enddate" /><br />
+          </div>
+        </div>
+        <label for="description">Description</label><br />
+        <textarea required class="input-form" name="description" id="description"></textarea><br />
+        <label for="technologies">Technologies</label><br />
+        <div class="checkbox-wrapper">
+          <div class="checkbox">
+            <input type="checkbox" id="nodejs" name="technologies" value="Node.js" />
+            <label for="nodejs">Node.js</label><br />
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="reactjs" name="technologies" value="React.js" />
+            <label for="reactjs">React.js</label><br />
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="nextjs" name="technologies" value="Next.js" />
+            <label for="nextjs">Next.js</label><br />
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="typescript" name="technologies" value="TypeScript" />
+            <label for="typescript">TypeScript</label><br />
+          </div>
+        </div>
+        <div class="upload-wrapper">
+          <label for="image-upload">Upload Image</label><br />
+          <div class="input-container">
+            <input type="file" id="image-upload" name="image" class="upload-input" accept="image/*" />
+            <img style="margin-right: 10px" width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" />
+          </div>
+        </div>
+        <div class="btn-wrapper">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

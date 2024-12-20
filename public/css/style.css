@@ -216,7 +216,7 @@ nav {
   padding: 100px 0;
   background-color: #a8cd89;
 }
-#project .form-control {
+ #project .form-control {
   width: 75%;
   display: flex;
   flex-direction: column;
@@ -372,14 +372,32 @@ nav {
   box-shadow: 2px 2px 0px black;
 }
 
-#project .project-wrapper {
+.project-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: #ec6161;
+  flex-direction: column;
   padding: 30px 0;
+}
+ .search-wrapper {
+  width: 75%;
+  margin: 2rem 0 2rem 0;
+}
+
+ .search-wrapper .btn-search {
+  box-shadow: 8px 8px 0px black;
+  width: 20%;
+  border-radius: 20px;
+}
+
+ .search-wrapper .addblog {
+  box-shadow: 8px 8px 0px black;
+  background-color: #5DB996;
+  width: 10%;
+  border-radius: 20px;
 }
 
 #project .project-cart {
@@ -403,10 +421,9 @@ nav {
 #project .cart-wrapper {
   border-radius: 5px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 30px;
 }
+
 #project .card-wrap {
   padding: 15px;
   background-color: white;
@@ -414,12 +431,15 @@ nav {
   border-radius: 10px;
   box-shadow: 5px 5px 0px;
   margin: 0px 0px;
+  display: flex;
 }
 
-#project .cart .cart-body {
-  text-align: center;
+#project #projects-content .card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-#project .cart .cart-body img {
+#project .card .card-body img {
   border-radius: 10px;
 }
 #project .cart .cart-body .icon {
@@ -469,6 +489,12 @@ nav {
   background-color: #ec6161;
 }
 
+
+#blog .cart-image{
+  display: flex;
+  align-items: center;
+}
+
 #blog .contain {
   padding: 10px auto;
   width: 75%;
@@ -491,15 +517,33 @@ nav {
 }
 
 #blog .blog-wrapper {
-  background-color: white;
+  /* background-color: white;
   min-width: 80%;
   padding: 15px 15px;
   border-radius: 30px;
-  box-shadow: 5px 5px 5px black;
+  box-shadow: 5px 5px 5px black; */
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ec6161;
+  flex-direction: column;
+  padding: 30px 0;
 }
 
 #blog .form-control {
   width: 100%;
+}
+#blog .form-control.blog {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 8px 8px 0px black;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fada7a;
 }
 
 #blog .form-control form {
@@ -634,19 +678,18 @@ nav {
 }
 #blog .cart .btn-blog {
   display: flex;
+  width: 100%;
   justify-content: end;
 }
-#blog .cart .btn-blog button {
-  width: 20%;
-  background-color: black;
-  color: white;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-left: 10px;
-}
-#blog .cart .btn-blog button.post {
+#blog .cart .btn-blog a button
+{
+  width: 100%;
   background-color: #ec6161;
+  border-radius: 30px;
+  border: none;
+  color: white;
 }
+
 #blog.posting {
   width: 100%;
   text-align: end;

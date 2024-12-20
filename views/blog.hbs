@@ -1,60 +1,42 @@
 <main>
-  <!-- ADD BLOG -->
-  <section id="blog" class="blog">
-    <div class="contain">
-      <div class="containt-wrapper">
-        <div class="blog-title">
-          <h1>Create Blog Post</h1>
-        </div>
-        <div class="form-control">
-          <form action="/addBlog" method="post" class="blog-form">
-            <label for="title">Title</label><br />
-            <input required class="input-form" type="text" id="title" name="title" /><br />
-            <label for="content">Content</label><br />
-            <textarea required class="input-form" name="content" id="content" cols="30" rows="10"></textarea><br />
-            <div class="upload-wrapper">
-              <label for="image-upload">Upload Image</label><br />
-              <div class="input-container">
-                <div class="file-img">
-                  <label for="image-upload">
-                    <img style="margin-right: 10px" width="25px" src="   /img/svg/plus.svg" alt="" />
-                  </label>
-                  <input type="file" id="image-upload" class="upload-input" accept="image/*" name="image" title=" " />
-                </div>
-                {{!-- <img class="wide-file" style="margin-right: 10px" width="25px"
-                  src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" /> --}}
-              </div>
-            </div>
-            <button class="btn-submit">Submit</button>
-            {{!-- <button onclick="addBlog(event)" class="btn-submit">Submit</button> --}}
+
+  <section id="blog" class="mt-5">
+    <div class="blog-wrapper">
+      <div class="search-wrapper rounded-2 d-flex justify-content-between ">
+        <div class="search w-100 d-flex justify-content-start">
+          <form action="/searchblog" method="get" class="w-100 d-flex m-0">
+            <input class="form-control blog me-2 bg-white" name="q" type="search" placeholder="Search" aria-label="Search">
+            <button style="background-color: #78B3CE;" class="btn btn-search text-white mx-auto" type="submit">Search</button>
           </form>
+          <a class="btn text-white addblog d-flex flex-column justify-content-center" href="/addBlog"
+            type="submit"><span>Add Blog</span></a>
         </div>
       </div>
-  </section>
-  <!-- END ADD BLOG -->
-  <section id="blog">
-    <div class="blog-wrapper">
       <div class="blog-cart">
         <div class="cart-title">
           <h1>My Blog</h1>
         </div>
         <div class="cart-wrapper">
-          {{!-- <h1 class="note">"Data Belum Tersedia"</h1> --}}
           {{#each blogs}}
           <div style="width: 100%;" class="cart">
             <div class="cart-image">
-              <img width="300" src="/uploads/{{this.image}}" alt="{{this.title}}">
+              <img width="300" src="/img/blog/{{this.image}}" alt="{{this.title}}" />
             </div>
             <div class="cart-description">
-              <div class="btn-blog">
-                <button class="edit">Edit Post</button>
-                <button class="post">Post Blog</button>
+              <div class="btn-blog mb-3">
+                <a class="text-black btn btn-warning mx-2" href="/editblogpage/{{this.id}}">
+                  Edit Blog
+                </a>
+                <form id="deleteForm-{{this.id}}" action="/deleteblog/{{this.id}}?_method=DELETE" method="POST"
+                  style="display:none;">
+                </form>
+                <a onclick="confirmDelete({{this.id}})" class="delete btn btn-danger" type="submit">Delete Blog</a>
               </div>
               <div class="title-blog">
                 <h1>{{this.title}}</h1>
               </div>
               <div class="containt-blog">
-                <p>{{this.postDate}} | 3 Comments</p>
+                <p>{{postDate}} | 3 Comments</p>
                 <p>{{this.content}}</p>
               </div>
               <div class="posting">
@@ -62,13 +44,62 @@
               </div>
             </div>
           </div>
+          {{else}}
+          <h3 class="note text-center">"Data Belum Tersedia"</h3>
           {{/each}}
-
-
         </div>
       </div>
     </div>
   </section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Kamu Yakin ?',
+      text: "Data ini tidak bisa di kembalikan",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById(`deleteForm-${id}`).submit();
+      }
+    });
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const action = urlParams.get("action");
+  if (action === "delete") {
+    Swal.fire({
+      title: 'Terhapus!',
+      text: 'Data berhasil di hapus',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    });
+  } else if (action === "add") {
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'Data berhasil di tambahkan',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    });
+  } else if(action === "update") {
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'Data berhasil di update',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    })
+  }
+</script>
+
 <!-- END MAIN -->
-<script src="/js/blog.js"></script>

@@ -3,8 +3,6 @@ function toggleMenu() {
   navbarMenu.classList.toggle("active");
 }
 
-
-
 let blogs = [];
 
 function addBlog(e) {
