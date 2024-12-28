@@ -2,6 +2,11 @@ const { getRelativeTime, formatDate } = require("../utils/time");
 const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
+const { title } = require("process");
+const { truncateText } = require("../utils/truncateText");
+// const {sequelize} = require("sequelize");
+// const config = require("../config/config");
+// const sequelize = new require(development);
 
 const pool = new Pool({
   user: "postgres",
@@ -12,24 +17,22 @@ const pool = new Pool({
 });
 
 exports.renderHome = (req, res) => {
-  res.render("home", { isActive: true, title: "Home | Dumbways Task" });
+  res.render("home", { actived: "home", title: "Home | Dumbways Task" });
 };
 
 exports.searchBlog = async (req, res) => {
-  const searchQuery = req.query.q;
+  const searchQuery = req.query.search;
 
   if (!searchQuery) {
     return res.redirect("/blog");
   }
 
   try {
-    // Query untuk mencari blog berdasarkan title
     const result = await pool.query(
-      "SELECT * FROM blogs WHERE title ILIKE $1",
+      "SELECT * FROM blogs WHERE title ILIKE $1 Order by post_date DESC",
       [`%${searchQuery}%`]
     );
 
-    // Memformat tanggal dan menambahkan data baru
     const updatedBlogs = result.rows.map((blog) => {
       const postDate = new Date(blog.post_date);
       const formattedDate = postDate
@@ -44,13 +47,14 @@ exports.searchBlog = async (req, res) => {
         ...blog,
         time: getRelativeTime(postDate),
         postDate: formattedDate,
+        content: truncateText(blog.content, 150),
       };
     });
 
     res.render("blog", {
-      isBlog: true,
+      actived: "blog",
       title: "Blog | Dumbways Task",
-      blogs: updatedBlogs, 
+      blogs: updatedBlogs,
       searchQuery: searchQuery,
     });
   } catch (err) {
@@ -61,44 +65,103 @@ exports.searchBlog = async (req, res) => {
 
 exports.renderBlog = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM blogs ORDER BY id DESC");
-    const updatedBlogs = result.rows.map((blog) => {
-      const postDate = new Date(blog.post_date);
-      const dateString = postDate.toString();
+    const result = await pool.query(
+      "SELECT * FROM blogs order by post_date DESC"
+    );
 
-      const formattedDate = postDate
-        .toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })
-        .toString();
+    if (result.rows.length === 0) {
+      return res.render("blog", {
+        title: "Blog | Dumbways Task",
+        blogs: [],
+        message: "No blogs available at the moment.",
+      });
+    }
+
+    const updatedBlogs = result.rows.map((blog) => {
+      const postDate = blog.post_date ? new Date(blog.post_date) : new Date();
+      const formattedDate = postDate.toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
 
       return {
         ...blog,
+        content: truncateText(blog.content, 150),
         time: getRelativeTime(postDate),
         postDate: formattedDate,
       };
     });
 
     res.render("blog", {
-      isBlog: true,
+      actived: "blog",
       title: "Blog | Dumbways Task",
       blogs: updatedBlogs,
     });
   } catch (err) {
     console.error("Error fetching blogs:", err.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).render("error", {
+      message: "An error occurred while fetching blog posts.",
+      error: err.message,
+    });
+  }
+};
+
+exports.renderDetailBlog = async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM blogs WHERE title = $1", [
+      req.params.title,
+    ]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).render("error", {
+        message: "Blog not found.",
+      });
+    }
+
+    const blog = result.rows[0];
+    const postDate = blog.post_date ? new Date(blog.post_date) : null;
+
+    if (!postDate || isNaN(postDate)) {
+      console.warn("Invalid post_date for blog:", blog);
+      return res.status(500).render("error", {
+        message: "Invalid post date in blog data.",
+      });
+    }
+
+    const formattedDate = postDate.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    
+    
+    blog.time = path.format(postDate);
+    blog.postDate = formattedDate;
+    res.render("partials/blog/detailblog", {
+      title: "Blog | Dumbways Task",
+      blog: blog,
+      date:formattedDate
+    });
+  } catch (err) {
+    console.error("Error fetching blog details:", err.message);
+    res.status(500).render("error", {
+      message: "An error occurred while fetching blog details.",
+      error: err.message,
+    });
   }
 };
 
 exports.renderContact = (req, res) => {
-  res.render("contact", { isContact: true, title: "Contact | Dumbways Task" });
+  res.render("contact", {
+    actived: "contact",
+    title: "Contact | Dumbways Task",
+  });
 };
 
 exports.renderTestimonial = (req, res) => {
   res.render("testimonial", {
-    isTestimonial: true,
+    actived: "testimonial",
     title: "Testimonial | Dumbways Task",
   });
 };
@@ -193,11 +256,6 @@ exports.addBlog = async (req, res) => {
 };
 
 exports.deleteBlog = async (req, res) => {
-  // const index = req.params.index;
-  // console.log(index);
-  // console.log(blogs);
-  // blogs.splice(index, 1);
-  // res.redirect("/blog");
   try {
     const result = await pool.query("DELETE FROM blogs WHERE id = $1", [
       req.params.id,
@@ -212,7 +270,7 @@ exports.deleteBlog = async (req, res) => {
 exports.rendereditBlog = async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM blogs WHERE id = $1", [
-      req.params.index,
+      req.params.id,
     ]);
     res.render("partials/blog/editblog", {
       title: "Edit Blog | Dumbways Task",
@@ -280,21 +338,6 @@ exports.editBlog = async (req, res) => {
     res.status(500).send("Gagal memperbarui blog");
   }
 };
-
-// exports.editBlog = (req, res) => {
-//   const index = req.params.index;
-//   const { title, content } = req.body;
-//   const blog = {
-//     author: "Nur Muhammad Arofiq",
-//     title: title,
-//     content: content,
-//     image: blogs[index].image,
-//     postDate: new Date().toLocaleString(),
-//     time: getRelativeTime(new Date()),
-//   };
-//   blogs[index] = blog;
-//   res.redirect("/blog");
-// };
 
 // 404 Controller
 exports.render404 = (req, res) => {

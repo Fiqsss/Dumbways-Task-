@@ -1,3 +1,4 @@
+{{> preloader}}
 <section id="blog" class="blog editblog">
     <div class="contain">
         <div class="containt-wrapper">
@@ -16,16 +17,28 @@
                     <br />
                     <div class="upload-wrapper">
                         <label for="image-upload">Upload Image</label><br />
-                        <div class="input-container">
-                            <div class="file-img">
-                                <label for="image-upload">
-                                    <img style="margin-right: 10px" width="25px" src="   /img/svg/plus.svg" alt="" />
+                        <div class="input-container d-flex justify-content-between">
+                            <input type="file" id="image-upload" name="image" class="upload-input" accept="image/*"
+                                hidden />
+
+                            <label style="padding: 8px 15px; min-width: 9rem;" for="image-upload"
+                                class="file-label bg-primary h-100 text-white m-0 rounded-4">
+                                Choose a file
+                            </label>
+
+                            <div class="w-100 d-flex justify-content-between px-2">
+                                <span id="fileName" class="file-name">
+                                    {{#if blog.image}}
+                                    {{blog.image}}
+                                    {{else}}
+                                    No file
+                                    {{/if}}
+                                </span>
+                                <label class=" text-center p-0 m-0" for="image-upload">
+                                    <img width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg"
+                                        alt="Attachment Icon" />
                                 </label>
-                                <input value="{{blog.image}}" type="file" id="image-upload" class="upload-input" accept="image/*" name="image"
-                                    title=" " />
                             </div>
-                            {{!-- <img class="wide-file" style="margin-right: 10px" width="25px"
-                                src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" /> --}}
                         </div>
                     </div>
                     <button class="btn-submit">Submit</button>
@@ -34,3 +47,17 @@
             </div>
         </div>
 </section>
+
+
+<script>
+  const fileInput = document.getElementById("image-upload");
+  const fileNameDisplay = document.getElementById("fileName");
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      fileNameDisplay.textContent = fileInput.files[0].name;
+    } else {
+      fileNameDisplay.textContent = "No file";
+    }
+  });
+</script>

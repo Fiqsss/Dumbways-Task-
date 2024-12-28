@@ -1,15 +1,27 @@
+{{> preloader}}
 <main>
-
   <section id="blog" class="mt-5">
     <div class="blog-wrapper">
-      <div class="search-wrapper rounded-2 d-flex justify-content-between ">
+      <div class="search-wrapper rounded-2 d-flex justify-content-between p-3">
         <div class="search w-100 d-flex justify-content-start">
           <form action="/searchblog" method="get" class="w-100 d-flex m-0">
-            <input class="form-control blog me-2 bg-white" name="q" type="search" placeholder="Search" aria-label="Search">
-            <button style="background-color: #78B3CE;" class="btn btn-search text-white mx-auto" type="submit">Search</button>
+            <input value="{{searchQuery}}" class="form-control blog me-2 bg-white" name="search" type="search"
+              placeholder="Search" aria-label="Search">
+            <button style="background-color: #78B3CE;" class="btn btn-search text-white mx-auto"
+              type="submit">Search</button>
           </form>
+        </div>
+      </div>
+      <div class="option-wrapper  rounded-2 d-flex justify-content-between p-2">
+        <div class="search w-100 d-flex justify-content-end">
           <a class="btn text-white addblog d-flex flex-column justify-content-center" href="/addBlog"
-            type="submit"><span>Add Blog</span></a>
+            type="submit"><span class="fs-6">Add Blog</span></a>
+          {{!-- <a class="btn text-white filterbtn d-flex flex-column justify-content-center bg-primary" href="#"
+            type="submit"><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-filter" viewBox="0 0 16 16">
+                <path
+                  d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+              </svg></span></a> --}}
         </div>
       </div>
       <div class="blog-cart">
@@ -20,11 +32,13 @@
           {{#each blogs}}
           <div style="width: 100%;" class="cart">
             <div class="cart-image">
-              <img width="300" src="/img/blog/{{this.image}}" alt="{{this.title}}" />
+              <a href="/detailblog/{{this.title}}">
+                <img style="max-height: 15rem;" width="300" src="/img/blog/{{this.image}}" alt="{{this.title}}" />
+              </a>
             </div>
             <div class="cart-description">
               <div class="btn-blog mb-3">
-                <a class="text-black btn btn-warning mx-2" href="/editblogpage/{{this.id}}">
+                <a class="text-black btn btn-warning mx-2" href="/editblog/{{this.id}}">
                   Edit Blog
                 </a>
                 <form id="deleteForm-{{this.id}}" action="/deleteblog/{{this.id}}?_method=DELETE" method="POST"
@@ -33,7 +47,9 @@
                 <a onclick="confirmDelete({{this.id}})" class="delete btn btn-danger" type="submit">Delete Blog</a>
               </div>
               <div class="title-blog">
-                <h1>{{this.title}}</h1>
+                <a class="text-decoration-none text-black" href="/detailblog/{{this.title}}">
+                  <h1>{{this.title}}</h1>
+                </a>
               </div>
               <div class="containt-blog">
                 <p>{{postDate}} | 3 Comments</p>
@@ -90,7 +106,7 @@
     }).then(() => {
       window.history.replaceState(null, null, window.location.pathname);
     });
-  } else if(action === "update") {
+  } else if (action === "update") {
     Swal.fire({
       title: 'Berhasil!',
       text: 'Data berhasil di update',

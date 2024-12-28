@@ -11,7 +11,8 @@ const {
   renderaddBlog,
   rendereditBlog,
   editBlog,
-  searchBlog
+  searchBlog,
+  renderDetailBlog
 } = require("../controllers/BlogController");
 
 const {
@@ -20,6 +21,10 @@ const {
   getProjects,
   getProjectDetails,
   addProject,
+  deleteProject,
+  renderEditProject,
+  searchProject,
+  editProject
 } = require("../controllers/ProjectController");
 
 const router = express.Router();
@@ -30,10 +35,11 @@ router.get("/", renderHome);
 router.get("/blog", renderBlog);
 router.get("/addblog", renderaddBlog);
 router.delete("/deleteblog/:id", deleteBlog);
-router.get("/editblogpage/:index", rendereditBlog);
+router.get("/editblog/:id", rendereditBlog);
 router.post("/addBlog", addBlog);
 router.post("/editblog/:id", editBlog);
 router.get("/searchblog", searchBlog);
+router.get("/detailblog/:title", renderDetailBlog);
 // END BLOG
 
 // PROJECT
@@ -42,6 +48,10 @@ router.get("/addproject", renderAddProject);
 router.get("/api/projects", getProjects);
 router.post("/addproject", addProject);
 router.get("/project/:title", getProjectDetails);
+router.delete("/deleteproject/:id", deleteProject);
+router.get("/editproject/:id", renderEditProject);
+router.post("/editproject/:id", editProject);
+router.get("/searchproject", searchProject);
 // END PROJECT
 
 router.get("/contact", renderContact);

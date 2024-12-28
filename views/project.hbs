@@ -1,14 +1,26 @@
+{{> preloader}}
 <section id="project" class="mt-5">
   <div class="project-wrapper d-flex justify-content-center flex-direction-column">
     <div class="search-wrapper rounded-2 d-flex justify-content-between ">
       <div class="search w-100 d-flex justify-content-start">
-        <form class="w-100 d-flex  m-0">
-          <input class="form-control me-2 bg-white" type="search" placeholder="Search" aria-label="Search">
+        <form action="/searchproject" method="get" class="w-100 d-flex  m-0">
+          <input value="{{search}}" name="search" class="form-control me-2 bg-white" type="search" placeholder="Search"
+            aria-label="Search">
           <button style="background-color: #78B3CE;" class="btn btn-search text-white mx-auto"
             type="submit">Search</button>
         </form>
-        <a class="btn text-white addblog d-flex flex-column justify-content-center" href="/addproject"
-          type="submit"><span>Add Blog</span></a>
+      </div>
+    </div>
+    <div class="option-wrapper  rounded-2 d-flex justify-content-between m-0 p-3">
+      <div class="search w-100 d-flex justify-content-end">
+        <a class="btn text-white addproject d-flex flex-column justify-content-center" href="/addProject"
+          type="submit"><span class="fs-6">Add Project</span></a>
+        {{!-- <a class="btn text-white filterbtn d-flex flex-column justify-content-center bg-primary" href="#"
+          type="submit"><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-filter" viewBox="0 0 16 16">
+              <path
+                d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+            </svg></span></a> --}}
       </div>
     </div>
     <div class="project-cart">
@@ -18,21 +30,28 @@
       <div id="projects-content" class="cart-wrapper row justify-content-center mt-4">
         {{#each projects}}
         <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
-          <div class="card">
-            <img width="100%" height="200px" src="${projects[i].image}" alt="" />
+          <div class="card w-100">
+            <a href="/project/{{this.projectname}}">
+              <img width="100%" height="200px" src="/img/project/{{this.image}}" alt="{{this.image}}" />
+            </a>
             <div class="card-body">
-              <h5 class="card-title">{{this.projectname}}</h5>
+              <a class="text-decoration-none bold text-black" href="/project/{{this.projectname}}">
+                <h4 class="card-title">{{this.projectname}}</h4>
+              </a>
               <p style="margin: 0;" class="card-text">durasi : {{this.duration}}</p>
               <p style="margin: 0;" class="card-text my-2">{{this.description}}</p>
-              <p style="margin: 15px 10px 15px 0;">{{this.technologies}}</p>
+              {{!-- <p style="margin: 15px 10px 15px 0;">{{this.technologies}}</p> --}}
               <div class="icon my-3">
                 <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
                 <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
                 <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
               </div>
               <div class="btn-cart">
-                <button>Edit</button>
-                <button>Delete</button>
+                <a class="text-decoration-none" href="/editproject/{{this.id}}">Edit</a>
+                <form id="deleteForm-{{this.id}}" action="/deleteproject/{{this.id}}?_method=DELETE" method="POST"
+                  style="display:none;">
+                </form>
+                <a onclick="confirmDelete({{this.id}})">Delete</a>
               </div>
             </div>
           </div>
@@ -46,9 +65,9 @@
 </section>
 <script>
 
-  function renderProjects(projects) {
-    projects.forEach((project) => {
-      const projectCart = `
+  // function renderProjects(projects) {
+  projects.forEach((project) => {
+    const projectCart = `
           <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
             <a class="text-decoration-none" href="/project/${project.title}">
                 <div class="card">
@@ -72,16 +91,65 @@
             </a>
           </div>
         `;
-      elementHTML.innerHTML += projectCart;
+    elementHTML.innerHTML += projectCart;
+  })
+  //
+  // async function showAllProjects() {
+  //   const projects = await fetchProjects();
+  //   //elementHTML.innerHTML
+  //
+  //   renderProjects(projects);
+  // }
+  // document.addEventListener('DOMContentLoaded', fetchProjects);
+  // showAllProjects();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Kamu Yakin ?',
+      text: "Data ini tidak bisa di kembalikan",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById(`deleteForm-${id}`).submit();
+      }
+    });
+  }
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const action = urlParams.get("action");
+  if (action === "delete") {
+    Swal.fire({
+      title: 'Terhapus!',
+      text: 'Data berhasil di hapus',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    });
+  } else if (action === "add") {
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'Data berhasil di tambahkan',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    });
+  } else if (action === "update") {
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'Data berhasil di update',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
     })
   }
-
-  async function showAllProjects() {
-    const projects = await fetchProjects();
-    //elementHTML.innerHTML 
-
-    renderProjects(projects);
-  }
-  document.addEventListener('DOMContentLoaded', fetchProjects);
-  showAllProjects();
 </script>

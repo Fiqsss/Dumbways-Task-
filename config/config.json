@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "111",
+    "database": "dumbwaysTask",
+    "port" : 7000,
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "111",
+    "database": "dumbwaysTask",
+    "port" : 7000,
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "111",
+    "database": "dumbwaysTask",
+    "port" : 7000,
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

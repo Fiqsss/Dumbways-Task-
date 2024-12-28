@@ -1,0 +1,87 @@
+{{> preloader}}
+<section id="project">
+  <div class="contact-form">
+    <div class="form-control">
+      <div class="title">
+        <h1 style="margin-bottom: 30px">Edit My Project</h1>
+      </div>
+      <form action="/editproject/{{project.id }}" method="post" class="project-form" enctype="multipart/form-data">
+        <label for="projectname">Project Name</label><br />
+        <input value="{{project.projectname}}" required class="input-form" type="text" id="projectname"
+          name="projectname" /><br />
+        <div class="dateinput">
+          <div>
+            <label for="startdate">Start Date</label><br />
+            <input value="{{project.startdate}}" required class="input-form" type="date" id="startdate"
+              name="startdate" /><br />
+          </div>
+
+          <div>
+            <label for="enddate">End Date</label><br />
+            <input value="{{project.enddate}}" required class="input-form" type="date" id="enddate"
+              name="enddate" /><br />
+          </div>
+        </div>
+        <label for="description">Description</label><br />
+        <textarea required class="input-form" name="description"
+          id="description">{{project.description}}</textarea><br />
+        <label for="technologies">Technologies</label><br />
+        <div class="checkbox-wrapper">
+          {{#each allTechnologies}}
+          <div class="checkbox">
+            <input type="checkbox" id="{{this}}" name="technologies" value="{{this}}" {{#if (includes
+              ../selectedTechnologies this)}}checked{{/if}} />
+            <label for="{{this}}">{{this}}</label><br />
+          </div>
+          {{/each}}
+        </div>
+        {{#if project.image}}
+        <div class="img-preview">
+          <img class="img-container" style="margin-right: 10px" src="/img/project/{{project.image}}" alt="" />
+        </div>
+        {{/if}}
+        <div class="upload-wrapper">
+          <label for="image-upload">Upload Image</label><br />
+          <div class="input-container d-flex justify-content-between">
+            <input type="file" id="image-upload" name="image" class="upload-input" accept="image/*" hidden />
+
+            <label style="padding: 8px 15px; min-width: 9rem;" for="image-upload"
+              class="file-label bg-primary h-100 text-white m-0 rounded-4">
+              Choose a file
+            </label>
+
+            <div class="w-100 d-flex justify-content-between px-2">
+              <span id="fileName" class="file-name">
+                {{#if project.image}}
+                {{project.image}}
+                {{else}}
+                No file
+                {{/if}}
+              </span>
+              <label class=" text-center p-0 m-0" for="image-upload">
+                <img  width="25px" src="/img/svg/attachment-attach-svgrepo-com.svg"
+                  alt="Attachment Icon" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="btn-wrapper">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const fileInput = document.getElementById("image-upload");
+  const fileNameDisplay = document.getElementById("fileName");
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      fileNameDisplay.textContent = fileInput.files[0].name;
+    } else {
+      fileNameDisplay.textContent = "No file";
+    }
+  });
+</script>

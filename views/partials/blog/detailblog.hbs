@@ -2,22 +2,21 @@
   <div class="container">
     <div style="height: 80%;" class="row d-flex justify-content-center align-items-center">
       <div class="col-12 col-md-12 col-lg-6 d-flex justify-content-center">
-        <img style="max-height: 30rem;" width="90%" src="/img/project/{{projects.image}}" alt="{{projects.image}}" />
+        <img style="max-height: 30rem;" width="90%" src="/img/blog/{{blog.image}}" alt="{{projects.image}}" />
       </div>
       <div class="col-12 col-md-12 col-lg-6 px-5">
         <div class="title">
-          <h2>{{projects.projectname}}</h2>
+          <h2>{{blog.title}}</h2>
         </div>
         <div class="desc-wrapper">
-          <p class="duration">Pengerjaan : {{this.duration}} bulan</p>
-          <p class="desc">{{projects.description}}</p>
-          <p class="fw-bold">Tech Stack : {{projects.technologies}}</p>
+          <p class="duration">Pengerjaan : {{date}}</p>
+          <p class="desc">{{blog.content}}</p>
           <div class="btn-wrapper w-100 d-flex justify-content-between">
-            <a href="/editproject/{{projects.id}}" style="width: 48%;" class="edit bg-warning btn btn-warning">Edit</a>
-            <form id="deleteForm-{{projects.id}}" action="/deleteproject/{{projects.id}}?_method=DELETE" method="POST"
+            <a href="/editblog/{{blog.id}}" style="width: 48%;" class="edit bg-warning btn btn-warning">Edit</a>
+            <form id="deleteForm-{{blog.id}}" action="/deleteblog/{{blog.id}}?_method=DELETE" method="POST"
               style="display:none;">
             </form>
-            <a style="width: 48%;" onclick="confirmDelete({{projects.id}})" class="delete btn btn-danger"
+            <a style="width: 48%;" onclick="confirmDelete({{blog.id}})" class="delete btn btn-danger"
               type="submit">Delete Blog</a>
           </div>
         </div>
