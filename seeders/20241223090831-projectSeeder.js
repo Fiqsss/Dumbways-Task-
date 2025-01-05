@@ -27,6 +27,8 @@ module.exports = {
         enddate: new Date(2024, endMonth, i),
         technologies: ["Node.js", "React.js", "Next.js", "TypeScript"],
         image: `${i}.jpg`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
     }
 

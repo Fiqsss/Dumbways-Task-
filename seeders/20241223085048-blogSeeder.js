@@ -12,6 +12,11 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    const users = await queryInterface.sequelize.query(
+      `SELECT id FROM users;`
+    );
+
+    const userId = users[0][0].id;
     const blogs = [];
 
     // Membuat 5 data blog menggunakan loop
@@ -21,6 +26,9 @@ module.exports = {
         content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lorem ipsum, auctor quis risus nec, euismod fringilla sem. Phasellus congue, lectus sit amet lobortis maximus, nisi augue laoreet leo, non fermentum diam felis id libero. Vivamus elit elit, fringilla eu scelerisque quis, fermentum non felis. Nullam vel lorem eget mauris porta posuere. Suspendisse potenti. Sed at pretium libero. Sed eu augue dapibus arcu viverra semper. Aliquam gravida sapien at ante lobortis, ut scelerisque nisl venenatis. Integer orci mauris, egestas sed lacus nec, pretium aliquam risus. Cras id metus tellus.`,
         image: `${i}.jpg`,
         post_date: new Date(),
+        user_id: Math.floor(Math.random() * 3) + 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
     }
     await queryInterface.bulkInsert("blogs", blogs, {});

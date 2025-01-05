@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTER</title>
+
+    <link rel="stylesheet" href="./css/login.css">
+    <style>
+        #lupapassword a {
+            color: white;
+        }
+
+        #lupapassword:hover a {
+            color: #35A29F;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form action="/register" method="post">
+
+            <h3>REGISTER</h3>
+
+            <div class="inputBox">
+                <span>Username</span>
+                <div class="box">
+                    <div class="icon"> <ion-icon name="person"></ion-icon></div>
+                    <input type="text" name="username" required>
+                </div>
+
+            </div>
+            <div class="inputBox">
+                <span>Email</span>
+                <div class="box">
+                    <div class="icon"> <ion-icon name="mail"></ion-icon></div>
+                    <input type="text" name="email" required>
+                </div>
+
+            </div>
+
+            <div class="inputBox">
+                <span>Password </span>
+                <div class="box">
+                    <div class="icon"><ion-icon name="lock-closed"></ion-icon></div>
+                    <input type="password" name="password" required>
+                </div>
+            </div>
+            <div class="inputBox">
+                <span>Re Password </span>
+                <div class="box">
+                    <div class="icon"><ion-icon name="lock-closed"></ion-icon></div>
+                    <input type="password" name="repassword" required>
+                </div>
+            </div>
+            <div class="inputBox">
+                <div class="box">
+                    <button id="button" class="btn" type="submit">REGISTRASI</button>
+                </div>
+            </div>
+            <div class="inputBox">
+                <div class="box">
+                    <a href="/login" id="button" class="btn" >LOGIN</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        {{#if messages.success}}
+    <script>
+        Swal.fire({
+            text: "{{messages.success}}",
+            icon: "success",
+            confirmButtonText: "OK",
+        }).then(() => {
+            window.history.replaceState(null, null, window.location.pathname);
+        });
+    </script>
+    {{/if}}
+    {{#if messages.error}}
+    <script>
+        Swal.fire({
+            text: "{{messages.error}}",
+            icon: "error",
+            confirmButtonText: "OK",
+        }).then(() => {
+            window.history.replaceState(null, null, window.location.pathname);
+        });
+
+    </script>
+    {{/if}}
+</body>
+
+</html>

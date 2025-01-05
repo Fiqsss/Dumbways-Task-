@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     technologies: DataTypes.ARRAY(DataTypes.DECIMAL)
   }, {
     sequelize,
-    modelName: 'projects',
+    modelName: 'Projects',
+    tableName: 'projects'
   });
   return Projects;
 };

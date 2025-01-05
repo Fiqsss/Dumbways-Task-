@@ -4,7 +4,7 @@
     width: 30%;
   }
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1115px) {
   nav {
     flex-direction: column;
     padding: 0.5rem 2rem;

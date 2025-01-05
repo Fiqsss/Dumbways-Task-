@@ -1,7 +1,7 @@
-// Fungsi untuk menghitung waktu relatif dari waktu sekarang
+
 exports.getRelativeTime = (date) => {
     const now = new Date();
-    const diff = Math.floor((now - date) / 1000); // Selisih dalam detik
+    const diff = Math.floor((now - date) / 1000); 
   
     if (diff < 60) return `${diff} seconds ago`;
     if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
@@ -14,6 +14,6 @@ exports.getRelativeTime = (date) => {
   
   exports.formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" };
-    return date.toLocaleDateString("en-US", options);
+    return date.toLocaleDateString("id-ID", options);
   };
   

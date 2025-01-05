@@ -1,15 +1,16 @@
+{{> navbar}}
 <section id="detailprojects">
   <div class="container">
     <div style="height: 80%;" class="row d-flex justify-content-center align-items-center">
       <div class="col-12 col-md-12 col-lg-6 d-flex justify-content-center">
-        <img style="max-height: 30rem;" width="90%" src="/img/blog/{{blog.image}}" alt="{{projects.image}}" />
+        <img style="max-height: 30rem;" width="90%" src="/img/blog/{{blog.image}}" alt="{{blog.image}}" />
       </div>
       <div class="col-12 col-md-12 col-lg-6 px-5">
         <div class="title">
           <h2>{{blog.title}}</h2>
         </div>
         <div class="desc-wrapper">
-          <p class="duration">Pengerjaan : {{date}}</p>
+          <p class="duration">Pengerjaan : {{blog.postDate}} | {{blog.user.username}}</p>
           <p class="desc">{{blog.content}}</p>
           <div class="btn-wrapper w-100 d-flex justify-content-between">
             <a href="/editblog/{{blog.id}}" style="width: 48%;" class="edit bg-warning btn btn-warning">Edit</a>

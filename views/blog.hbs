@@ -1,4 +1,4 @@
-{{> preloader}}
+{{> navbar}}
 <main>
   <section id="blog" class="mt-5">
     <div class="blog-wrapper">
@@ -29,6 +29,7 @@
           <h1>My Blog</h1>
         </div>
         <div class="cart-wrapper">
+          {{blogs.id}}
           {{#each blogs}}
           <div style="width: 100%;" class="cart">
             <div class="cart-image">
@@ -52,7 +53,7 @@
                 </a>
               </div>
               <div class="containt-blog">
-                <p>{{postDate}} | 3 Comments</p>
+                <p>{{postDate}} | {{this.user.dataValues.username}} | 3 Comments</p>
                 <p>{{this.content}}</p>
               </div>
               <div class="posting">
@@ -67,55 +68,10 @@
       </div>
     </div>
   </section>
+  {{> footer}}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  function confirmDelete(id) {
-    Swal.fire({
-      title: 'Kamu Yakin ?',
-      text: "Data ini tidak bisa di kembalikan",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById(`deleteForm-${id}`).submit();
-      }
-    });
-  }
+{{> alert}}
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const action = urlParams.get("action");
-  if (action === "delete") {
-    Swal.fire({
-      title: 'Terhapus!',
-      text: 'Data berhasil di hapus',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    });
-  } else if (action === "add") {
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'Data berhasil di tambahkan',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    });
-  } else if (action === "update") {
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'Data berhasil di update',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    })
-  }
-</script>
 
 <!-- END MAIN -->

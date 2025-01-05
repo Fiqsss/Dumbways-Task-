@@ -36,6 +36,20 @@
 //    link.href = mailtoLink;
 //    link.click();
 //  });
+
+
+// const loadingOverlay = document.getElementById("loading-overlay");
+// document.querySelectorAll("a").forEach((link) => {
+//   link.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     // loadingOverlay.style.display = "flex";
+
+//     const url = e.target.href;
+//     setTimeout(() => {
+//       window.location.href = url;
+//     }, 1000);
+//   });
+// });
 function toggleMenu() {
   const navbarMenu = document.getElementById("navbarMenu");
   navbarMenu.classList.toggle("active");

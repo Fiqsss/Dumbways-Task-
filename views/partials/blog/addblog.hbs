@@ -1,32 +1,52 @@
 {{> preloader}}
- <section id="blog" class="blog">
-    <div class="contain">
-      <div class="containt-wrapper">
-        <div class="blog-title">
-          <h1>Create Blog Post</h1>
-        </div>
-        <div class="form-control">
-          <form action="/addBlog" method="post" class="blog-form" enctype="multipart/form-data">
-            <label for="title">Title</label><br />
-            <input required class="input-form" type="text" id="title" name="title" /><br />
-            <label for="content">Content</label><br />
-            <textarea required class="input-form" name="content" id="content" cols="30" rows="10"></textarea><br />
-            <div class="upload-wrapper">
-              <label for="image-upload">Upload Image</label><br />
-              <div class="input-container">
-                <div class="file-img">
-                  <label for="image-upload">
-                    <img style="margin-right: 10px" width="25px" src="   /img/svg/plus.svg" alt="" />
-                  </label>
-                  <input type="file" id="image-upload" class="upload-input" accept="image/*" name="image" title=" " />
-                </div>
-                {{!-- <img class="wide-file" style="margin-right: 10px" width="25px"
-                  src="/img/svg/attachment-attach-svgrepo-com.svg" alt="" /> --}}
-              </div>
-            </div>
-            <button class="btn-submit">Submit</button>
-            {{!-- <button onclick="addBlog(event)" class="btn-submit">Submit</button> --}}
-          </form>
-        </div>
+{{> navbar}}
+<section id="blog" class="blog">
+  <div class="contain">
+    <div class="containt-wrapper">
+      <div class="blog-title">
+        <h1>Create Blog Post</h1>
       </div>
-  </section>
+      <div class="form-control">
+        <form action="/addBlog" method="post" class="blog-form" enctype="multipart/form-data">
+          <label for="title">Title</label><br />
+          <input required class="input-form" type="text" id="title" name="title" /><br />
+          <label for="content">Content</label><br />
+          <textarea required class="input-form" name="content" id="content" cols="30" rows="10"></textarea><br />
+          <div class="upload-wrapper">
+            <label for="image-upload">Upload Image</label><br />
+            <div id="image-preview-container" style="margin-top: 10px;" class="d-flex justify-content-center">
+              <input type="file" id="image-upload" class="upload-input" accept="image/*" name="image" title=" "
+                onchange="previewImage(event)" hidden />
+              <div class="image-preview-box">
+                <label style="cursor: pointer;" class="w-100 h-100 d-flex justify-content-center " for="image-upload">
+                  <img  style="cursor: pointer;" width="25px" src="/img/svg/plus.svg" alt="">
+                </label>
+              </div>
+            </div> 
+            <div class="image-name-container mt-2">
+            </div>
+          </div>
+          <button class="btn-submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function previewImage(event) {
+    const imageInput = event.target;
+    const imagePreviewBox = document.querySelector(".image-preview-box");
+    const imageName = document.querySelector(".image-name-container");
+    if (imageInput.files && imageInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        console.log(imageInput.files[0].name);
+        imagePreviewBox.innerHTML = `<label  class="w-100 d-flex justify-content-center" for="image-upload"> <img id="image-preview" src="${e.target.result}" alt="Image Preview" 
+          style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 5px;" /> </label>`;
+        imageName.innerHTML = `<p class="text-primary text-center">${imageInput.files[0].name}</p>`
+      };
+      reader.readAsDataURL(imageInput.files[0]);
+    }
+  }
+</script>

@@ -51,8 +51,9 @@ body {
   margin-left: -20px;
 }
 
-.notfound .notfound-404 h1>span {
+.notfound .notfound-404 h1>p {
   text-shadow: -8px 0px 0px #fff;
+  margin: 0 20px;
 }
 
 .notfound .notfound-404 h3 {

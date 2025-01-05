@@ -1,0 +1,44 @@
+{{#if messages.success}}
+<script>
+    Swal.fire({
+        text: "{{messages.success}}",
+        icon: "success",
+        confirmButtonText: "OK",
+    }).then(() => {
+        window.history.replaceState(null, null, window.location.pathname);
+    });
+</script>
+{{/if}}
+{{#if messages.error}}
+<script>
+    Swal.fire({
+        text: "{{messages.error}}",
+        icon: "error",
+        confirmButtonText: "OK",
+    }).then(() => {
+        window.history.replaceState(null, null, window.location.pathname);
+    });
+</script>
+{{/if}}
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    //const action = urlParams.get("action");
+    //const error = urlParams.get("error");
+    //const success = urlParams.get("success");
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`deleteForm-${id}`).submit();
+            }
+        });
+    }
+</script>
+

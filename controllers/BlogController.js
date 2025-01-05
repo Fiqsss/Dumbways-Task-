@@ -1,25 +1,15 @@
 const { getRelativeTime, formatDate } = require("../utils/time");
-const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
-const { title } = require("process");
 const { truncateText } = require("../utils/truncateText");
-// const {sequelize} = require("sequelize");
-// const config = require("../config/config");
-// const sequelize = new require(development);
+const { Sequelize, QueryTypes } = require("sequelize");
+const config = require("../config/config");
+const sequelize = new Sequelize(config.development);
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "dumbwaysTask",
-  password: "111",
-  port: 7000,
-});
+const { Blogs, Users } = require("../models");
+const flash = require("express-flash");
 
-exports.renderHome = (req, res) => {
-  res.render("home", { actived: "home", title: "Home | Dumbways Task" });
-};
-
+// SEARCH BLOG
 exports.searchBlog = async (req, res) => {
   const searchQuery = req.query.search;
 
@@ -28,12 +18,15 @@ exports.searchBlog = async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM blogs WHERE title ILIKE $1 Order by post_date DESC",
-      [`%${searchQuery}%`]
+    const result = await sequelize.query(
+      'SELECT * FROM blogs WHERE title LIKE :search Order by "createdAt" DESC',
+      {
+        type: QueryTypes.SELECT,
+        replacements: { search: `%${searchQuery}%` },
+      }
     );
 
-    const updatedBlogs = result.rows.map((blog) => {
+    const updatedBlogs = result.map((blog) => {
       const postDate = new Date(blog.post_date);
       const formattedDate = postDate
         .toLocaleDateString("en-US", {
@@ -58,37 +51,52 @@ exports.searchBlog = async (req, res) => {
       searchQuery: searchQuery,
     });
   } catch (err) {
+    const code = 500;
+    const codeArray = [code];
     console.error("Error searching blogs:", err.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).render("partials/404", {
+      message: "Internal Server Error",
+      codeArray: codeArray,
+    });
   }
 };
+// END SEARCH BLOG
 
+// RENDER BLOG
 exports.renderBlog = async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT * FROM blogs order by post_date DESC"
-    );
+    const data = await Blogs.findAll({
+      include: [
+        {
+          model: Users,
+          as: "user",
+          attributes: ["id", "username", "email"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
 
-    if (result.rows.length === 0) {
+    if (!data || data.length === 0) {
       return res.render("blog", {
-        title: "Blog | Dumbways Task",
+        actived: "blog",
+        title: "No Blogs Found",
         blogs: [],
-        message: "No blogs available at the moment.",
+        user: req.session.user,
       });
     }
 
-    const updatedBlogs = result.rows.map((blog) => {
-      const postDate = blog.post_date ? new Date(blog.post_date) : new Date();
-      const formattedDate = postDate.toLocaleDateString("en-US", {
+    const blogs = data.map((blog) => {
+      const postDate = blog.post_date || blog.createdAt;
+      const formattedDate = new Date(postDate).toLocaleDateString("id-ID", {
         day: "numeric",
         month: "long",
         year: "numeric",
       });
 
       return {
-        ...blog,
+        ...blog.dataValues,
         content: truncateText(blog.content, 150),
-        time: getRelativeTime(postDate),
+        time: getRelativeTime(new Date(postDate)),
         postDate: formattedDate,
       };
     });
@@ -96,250 +104,276 @@ exports.renderBlog = async (req, res) => {
     res.render("blog", {
       actived: "blog",
       title: "Blog | Dumbways Task",
-      blogs: updatedBlogs,
+      blogs: blogs,
+      user: req.session?.user || null,
     });
   } catch (err) {
-    console.error("Error fetching blogs:", err.message);
-    res.status(500).render("error", {
-      message: "An error occurred while fetching blog posts.",
-      error: err.message,
+    console.error("Error fetching blog posts:", err.message);
+    res.status(500).render("partials/404", {
+      message: "Internal Server Error",
+      codeArray: [500],
     });
   }
 };
+// END RENDER BLOG
 
+// RENDER DETAIL BLOG
 exports.renderDetailBlog = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM blogs WHERE title = $1", [
-      req.params.title,
-    ]);
+    const result = await Blogs.findAll({
+      where: { title: req.params.title },
+      include: [
+        {
+          model: Users,
+          as: "user",
+          attributes: ["id", "username", "email"],
+        },
+      ],
+    });
 
-    if (result.rows.length === 0) {
-      return res.status(404).render("error", {
-        message: "Blog not found.",
+    if (result.length === 0) {
+      return res.status(404).render("partials/404", {
+        message: "Halaman Blog tidak ditemukan.",
+        codeArray: [404],
       });
     }
 
-    const blog = result.rows[0];
+    const blog = result[0].get({ plain: true }); 
     const postDate = blog.post_date ? new Date(blog.post_date) : null;
 
     if (!postDate || isNaN(postDate)) {
-      console.warn("Invalid post_date for blog:", blog);
-      return res.status(500).render("error", {
+      return res.status(500).render("partials/404", {
         message: "Invalid post date in blog data.",
+        codeArray: [500],
       });
     }
 
-    const formattedDate = postDate.toLocaleDateString("en-US", {
+    const formattedDate = postDate.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
     });
-    
-    
-    blog.time = path.format(postDate);
+
+    blog.time = getRelativeTime(postDate);
     blog.postDate = formattedDate;
+    console.log("Blog:", blog.user);
     res.render("partials/blog/detailblog", {
       title: "Blog | Dumbways Task",
       blog: blog,
-      date:formattedDate
+      actived: "blog",
     });
-  } catch (err) {
-    console.error("Error fetching blog details:", err.message);
-    res.status(500).render("error", {
-      message: "An error occurred while fetching blog details.",
-      error: err.message,
-    });
-  }
-};
-
-exports.renderContact = (req, res) => {
-  res.render("contact", {
-    actived: "contact",
-    title: "Contact | Dumbways Task",
-  });
-};
-
-exports.renderTestimonial = (req, res) => {
-  res.render("testimonial", {
-    actived: "testimonial",
-    title: "Testimonial | Dumbways Task",
-  });
-};
-
-exports.getTestimonials = async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM testimonials");
-    res.status(200).json(result.rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.render("partials/404", {
+      message: "Internal Server Error",
+      codeArray: [500],
+    });
   }
 };
 
-exports.renderaddBlog = (req, res) => {
-  res.render("partials/blog/addblog", { title: "Add Blog | Dumbways Task" });
+// END RENDER DETAIL BLOG
+
+// RENDER ADD BLOG
+exports.renderaddBlog = async (req, res) => {
+  if (!req.session || !req.session.user) {
+    req.flash("error", "Please log in to add a blog.");
+    return res.status(401).redirect("/blog");
+  }
+  res.render("partials/blog/addblog", { title: "Add Blog | Dumbways Task", user: req.session.user });
 };
-exports.addBlog = async (req, res) => {
-  let imageFileName = null;
-  const { title, content } = req.body;
-  console.log(req.files);
-  const uploadDir = path.resolve(__dirname, "../public/img/blog/");
+// END RENDER ADD BLOG
 
+// RENDER EDIT BLOG
+exports.rendereditBlog = async (req, res) => {
   try {
-    if (req.files && req.files.image) {
-      const imageFile = req.files.image;
-      imageFileName = imageFile.name;
+    if (req.session && req.session.user) {
+      const userId = req.session.user.id;
+      const blog = await Blogs.findOne({
+        where: { id: req.params.id },
+      });
 
-      const uploadPath = path.join(uploadDir, imageFileName);
-      console.log("Upload Path:", uploadPath);
+      if (blog.user_id !== userId) {
+        req.flash("error", "You do not have permission to edit this blog.");
+        return res.status(403).redirect("/blog");
+      }
+    } else {
+      req.flash("error", "Please log in to edit this blog.");
+      return res.status(401).redirect("/blog");
+    }
 
-      await new Promise((resolve, reject) => {
-        imageFile.mv(uploadPath, (err) => {
-          if (err) {
-            console.error("Gagal mengunggah gambar:", err);
-            reject(err);
-          } else {
-            console.log("Gambar berhasil diunggah");
-            resolve();
-          }
-        });
+    const [results] = await sequelize.query(
+      `SELECT * FROM blogs WHERE id = '${req.params.id}'`,
+      {
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    if (results.length === 0) {
+      return res.status(404).render("partials/404", {
+        message: "Blog not found.",
+        codeArray: [404],
       });
     }
 
-    const postDate = new Date();
-
-    const query = `
-      INSERT INTO blogs (title, content, image, post_date)
-      VALUES ($1, $2, $3, $4)
-    `;
-    const values = [title, content, imageFileName, postDate];
-
-    await pool.query(query, values);
-
-    console.log("Blog berhasil disimpan ke database");
-    res.redirect("/blog?action=add");
-  } catch (error) {
-    console.error("Gagal menambahkan blog:", error.message);
-    res.status(500).send("Gagal menambahkan blog");
-  }
-  // if (req.files && req.files.image) {
-  //   const imageFile = req.files.image;
-  //   imageFileName = imageFile.name;
-  //
-  //   const uploadPath = path.join(uploadDir, imageFileName);
-  //   console.log("Upload Path:", uploadPath);
-  //
-  //   imageFile.mv(uploadPath, (err) => {
-  //     if (err) {
-  //       console.error("Gagal mengunggah gambar:", err);
-  //       return res.status(500).send("Gagal mengunggah gambar");
-  //     }
-  //
-  //     console.log("Gambar berhasil diunggah");
-  //
-  //     const blog = {
-  //       author: "Nur Muhammad Arofiq",
-  //       title: title,
-  //       content: content,
-  //       image: imageFileName,
-  //       postDate: new Date().toLocaleString(),
-  //       time: getRelativeTime(new Date()),
-  //     };
-  //
-  //     blogs.push(blog);
-  //     res.redirect("/blog");
-  //   });
-  // } else {
-  //   console.log("Tidak ada gambar yang diupload");
-  //   res.redirect("/blog");
-  // }
-};
-
-exports.deleteBlog = async (req, res) => {
-  try {
-    const result = await pool.query("DELETE FROM blogs WHERE id = $1", [
-      req.params.id,
-    ]);
-    res.redirect("/blog?action=delete");
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).render("partials/404");
-  }
-};
-
-exports.rendereditBlog = async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM blogs WHERE id = $1", [
-      req.params.id,
-    ]);
+    blog = results;
     res.render("partials/blog/editblog", {
       title: "Edit Blog | Dumbways Task",
-      blog: result.rows[0],
+      blog,
+      user: req.session.user,
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).render("partials/404");
+    res.status(500).render("partials/404", {
+      message: "Internal Server Error",
+      codeArray: [500],
+    });
   }
 };
+// END RENDER EDIT BLOG
 
-exports.editBlog = async (req, res) => {
-  const id = req.params.id;
+// ADD BLOG
+exports.addBlog = async (req, res) => {
+  console.log("Request Body:", req.body);
+  console.log("Uploaded File:", req.file);
+
   const { title, content } = req.body;
   let imageFileName = null;
 
+  try {
+    if (!title || !content) {
+      return res.status(400).render("partials/404", {
+        message: "Title dan content harus diisi.",
+        codeArray: [400],
+      });
+    }
+
+    if (req.file) {
+      imageFileName = req.file.filename;
+    }
+
+    const postDate = new Date();
+    const newBlog = await Blogs.create({
+      title,
+      content,
+      user_id: req.session.user.id,
+      image: imageFileName,
+      post_date: postDate,
+    });
+    
+    console.log("data Berehal ditambahkan");
+    req.flash("success", "The blog has been added successfully.");
+    res.redirect("/blog");
+  } catch (error) {
+    console.error("Gagal menambahkan blog:", error.message);
+    res.status(500).render("partials/404", {
+      message: "Gagal menambahkan blog. Silakan coba lagi.",
+      codeArray: [500],
+    });
+  }
+};
+// END ADD BLOG
+
+
+
+// EDIT BLOG
+exports.editBlog = async (req, res) => {
+  const id = req.params.id;
+  const { title, content } = req.body;
   const uploadDir = path.resolve(__dirname, "../public/img/blog/");
 
   try {
-    const result = await pool.query("SELECT image FROM blogs WHERE id = $1", [
-      id,
-    ]);
-    const oldImage = result.rows[0]?.image;
 
-    if (req.files && req.files.image) {
-      const imageFile = req.files.image;
-      imageFileName = imageFile.name;
+    const blog = await Blogs.findOne({ where: { id } });
+    if (!blog) {
+      req.flash("error", "Blog not found.");
+      return res.status(404).redirect("/blog");
+    }
+
+    const oldImage = blog.image;
+    let imageFileName = oldImage;
+
+    if (req.file) {
+      imageFileName = `${Date.now()}_${req.file.originalname}`;
 
       if (oldImage) {
         const oldImagePath = path.join(uploadDir, oldImage);
         if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath); // Menghapus gambar lama
-          console.log("Gambar lama berhasil dihapus");
+          fs.unlinkSync(oldImagePath);
+          console.log("Old image deleted successfully.");
         }
       }
-      const uploadPath = path.join(uploadDir, imageFileName);
-      await new Promise((resolve, reject) => {
-        imageFile.mv(uploadPath, (err) => {
-          if (err) {
-            console.error("Gagal mengunggah gambar:", err);
-            reject(err);
-          } else {
-            console.log("Gambar berhasil diunggah");
-            resolve();
-          }
-        });
-      });
-    } else {
-      imageFileName = oldImage;
+
+      const newImagePath = path.join(uploadDir, imageFileName);
+      fs.renameSync(req.file.path, newImagePath);
+      console.log("New image uploaded successfully:", imageFileName);
     }
 
-    const query = `
-      UPDATE blogs
-      SET title = $1, content = $2, image = $3
-      WHERE id = $4
-    `;
-    const values = [title, content, imageFileName, id];
+    await Blogs.update(
+      { title, content, image: imageFileName },
+      { where: { id } }
+    );
 
-    await pool.query(query, values);
-
-    console.log("Blog berhasil diupdate");
-    res.redirect(`/blog?action=update`);
+    req.flash("success", "Blog has been updated successfully.");
+    res.redirect("/blog");
   } catch (error) {
-    console.error("Gagal memperbarui blog:", error.message);
-    res.status(500).send("Gagal memperbarui blog");
+    console.error("Error updating blog:", error.message);
+    req.flash("error", "Failed to update blog. Please try again.");
+    res.status(500).redirect("/blog");
   }
 };
+// END EDIT BLOG
 
-// 404 Controller
-exports.render404 = (req, res) => {
-  res.status(404).render("partials/404");
+
+// DELETE BLOG
+exports.deleteBlog = async (req, res) => {
+  const id = req.params.id;
+  const uploadDir = path.resolve(__dirname, "../public/img/blog/");
+
+  try {
+    const blog = await Blogs.findOne({ where: { id } });
+
+    if (!blog) {
+      req.flash("error", "Blog not found.");
+      return res.status(404).redirect("/blog");
+    }
+
+    if (req.session && req.session.user) {
+      const userId = req.session.user.id;
+
+      if (blog.user_id !== userId) {
+        req.flash("error", "You do not have permission to delete this blog.");
+        return res.status(403).redirect("/blog");
+      }
+    } else {
+      req.flash("error", "Please log in to delete this blog.");
+      return res.status(401).redirect("/blog");
+    }
+
+    if (blog.image) {
+      const imagePath = path.join(uploadDir, blog.image);
+
+      try {
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+          console.log("Image successfully deleted:", blog.image);
+        } else {
+          console.log("Image not found, skipping deletion:", blog.image);
+        }
+      } catch (fileErr) {
+        console.error("Error deleting image:", fileErr.message);
+      }
+    }
+
+    await Blogs.destroy({ where: { id } });
+
+    req.flash("success", "Blog deleted successfully.");
+    res.redirect("/blog?action=delete");
+  } catch (err) {
+    console.error("Failed to delete blog:", err.message);
+    res.status(500).render("partials/404", {
+      message: "Failed to delete blog. Please try again later.",
+      codeArray: [500],
+    });
+  }
 };
+// END DELETE BLOG
+// 404 Controller

@@ -1,65 +1,100 @@
 const express = require("express");
+
+// MIDDLEWARE
+const {
+  isLoggedIn,
+  isAlreadyLoggedIn,
+} = require("../middlewares/authMiddleware");
+const { uploadImg } = require("../middlewares/uploadImg");
+// END MIDDLEWARE
+
+const { authRegister, authLogin } = require("../controllers/Auth");
 const {
   renderHome,
-  renderBlog,
-  renderContact,
   renderTestimonial,
-  getTestimonials,
+  // getTestimonials,
+  renderContact,
   render404,
+} = require("../controllers/HomeContactController");
+
+const {
+  renderBlog,
   deleteBlog,
   addBlog,
   renderaddBlog,
   rendereditBlog,
   editBlog,
   searchBlog,
-  renderDetailBlog
+  renderDetailBlog,
 } = require("../controllers/BlogController");
 
 const {
   renderProject,
   renderAddProject,
+  renderEditProject,
   getProjects,
   getProjectDetails,
   addProject,
   deleteProject,
-  renderEditProject,
   searchProject,
-  editProject
+  editProject,
 } = require("../controllers/ProjectController");
 
 const router = express.Router();
 
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Gagal logout");
+    }
+    res.redirect("/login");
+  });
+});
+
 router.get("/", renderHome);
+router.get("/Home", renderHome);
+
+// Home Contact Testimoni
+router.get("/contact", renderContact);
+router.get("/testimonial", renderTestimonial);
+// END Home Contact Testimoni
 
 // BLOG
 router.get("/blog", renderBlog);
 router.get("/addblog", renderaddBlog);
-router.delete("/deleteblog/:id", deleteBlog);
 router.get("/editblog/:id", rendereditBlog);
-router.post("/addBlog", addBlog);
-router.post("/editblog/:id", editBlog);
+router.post("/addBlog", uploadImg.single("image"), addBlog);
+router.post("/editblog/:id", uploadImg.single("image"), editBlog);
 router.get("/searchblog", searchBlog);
 router.get("/detailblog/:title", renderDetailBlog);
+router.delete("/deleteblog/:id", isLoggedIn, deleteBlog);
 // END BLOG
 
 // PROJECT
 router.get("/project", renderProject);
-router.get("/addproject", renderAddProject);
+router.get("/addproject", isLoggedIn, renderAddProject);
 router.get("/api/projects", getProjects);
-router.post("/addproject", addProject);
+router.post("/addproject", uploadImg.single("image"), addProject);
 router.get("/project/:title", getProjectDetails);
-router.delete("/deleteproject/:id", deleteProject);
-router.get("/editproject/:id", renderEditProject);
-router.post("/editproject/:id", editProject);
+router.get(
+  "/editproject/:id",
+  isLoggedIn,
+  uploadImg.single("image"),
+  renderEditProject
+);
+router.post("/editproject/:id", uploadImg.single("image"), editProject);
 router.get("/searchproject", searchProject);
+router.delete("/deleteproject/:id", isLoggedIn, deleteProject);
 // END PROJECT
 
-router.get("/contact", renderContact);
-router.get("/testimonial", renderTestimonial);
-
-router.get("/api/testimonials", getTestimonials);
-
-
+router.get("/login", isAlreadyLoggedIn, (req, res) =>
+  res.render("../views/partials/login")
+);
+router.get("/register", isAlreadyLoggedIn, (req, res) =>
+  res.render("../views/partials/register")
+);
+router.post("/register", isAlreadyLoggedIn, authRegister);
+router.post("/login", isAlreadyLoggedIn, authLogin);
 router.use("*", render404);
 
 module.exports = router;

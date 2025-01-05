@@ -1,19 +1,23 @@
-require('dotenv').config();
+require("dotenv").config();
 const { getRelativeTime, formatDate } = require("../utils/time");
 const { truncateText } = require("../utils/truncateText");
 const path = require("path");
 const fs = require("fs");
 
-const { Sequelize, QueryTypes } = require('sequelize');
-const config = require('../config/config.json');
+const { Sequelize, QueryTypes } = require("sequelize");
+const config = require("../config/config.json");
 
 const sequelize = new Sequelize(config.development);
+
+const { Projects } = require("../models");
 
 exports.renderProject = async (req, res) => {
   try {
     const result = await sequelize.query(
-      "SELECT * FROM projects ORDER BY id",
-      { type: QueryTypes.SELECT }
+      'SELECT * FROM projects ORDER BY "createdAt" DESC',
+      {
+        type: QueryTypes.SELECT,
+      }
     );
 
     const data = result.map((project) => {
@@ -28,9 +32,8 @@ exports.renderProject = async (req, res) => {
 
       return {
         ...project,
-        time: startDate ? getRelativeTime(startDate) : "Unknown time",
-        startDate: startDate ? formatDate(startDate) : "Unknown date",
-        duration: durationInMonths > 0 ? `${durationInMonths} bulan` : "0 bulan",
+        duration:
+          durationInMonths > 0 ? `${durationInMonths} bulan` : "0 bulan",
         description: truncateText(project.description, 50),
       };
     });
@@ -39,6 +42,7 @@ exports.renderProject = async (req, res) => {
       actived: "project",
       title: "Project | Dumbways Task",
       projects: data,
+      user: req.session.user,
     });
   } catch (err) {
     console.error("Error fetching projects:", err.message);
@@ -66,21 +70,23 @@ exports.searchProject = async (req, res) => {
       return {
         ...project,
         description: truncateText(project.description, 50),
-      }
-    })
+      };
+    });
 
     res.render("project", {
       actived: "project",
       title: "Project | Dumbways Task",
-      projects: data, 
+      projects: data,
       search: query,
+      user: req.session.user,
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).render("partials/404", { message: "Internal Server Error" });
+    res
+      .status(500)
+      .render("partials/404", { message: "Internal Server Error" });
   }
 };
-
 
 exports.getProjects = async (req, res) => {
   try {
@@ -93,18 +99,17 @@ exports.getProjects = async (req, res) => {
 };
 
 exports.renderAddProject = (req, res) => {
+  console.log(req.originalUrl);
   res.render("partials/project/addproject", {
     title: "Add Project | Dumbways Task",
+    user: req.session.user,
+    actived: "project",
   });
 };
 
-const { Op } = require("sequelize");
-
 exports.getProjectDetails = async (req, res) => {
   const { title } = req.params;
-
   try {
-    // Validasi input
     if (!title || typeof title !== "string") {
       return res
         .status(400)
@@ -137,6 +142,8 @@ exports.getProjectDetails = async (req, res) => {
       return res.render("partials/project/detailproject", {
         projects: project,
         duration: durationInMonths,
+        user: req.session.user,
+        actived: "project",
       });
     } else {
       return res
@@ -151,59 +158,46 @@ exports.getProjectDetails = async (req, res) => {
   }
 };
 
-
 exports.addProject = async (req, res) => {
-  const { projectname, startdate, enddate, description, technologies } = req.body;
+  const { projectname, startdate, enddate, description, technologies } =
+    req.body;
   let imageFileName = null;
 
   const uploadDir = path.resolve(__dirname, "../public/img/project");
 
   try {
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    if (req.files && req.files.image) {
-      const imageFile = req.files.image;
-      imageFileName = imageFile.name;
-      const uploadPath = path.join(uploadDir, imageFileName);
-
-      await new Promise((resolve, reject) => {
-        imageFile.mv(uploadPath, (err) => {
-          if (err) {
-            console.error("Gagal mengunggah gambar:", err);
-            reject(err);
-          } else {
-            resolve();
-          }
-        });
+    if (
+      !projectname ||
+      !startdate ||
+      !enddate ||
+      !description ||
+      !technologies
+    ) {
+      req.flash("error", "All fields are required.");
+      return res.status(400).render("partials/project/addproject", {
+        title: "Add Project | Dumbways Task",
+        user: req.session.user,
       });
+    }
+    if (req.file) {
+      imageFileName = req.file.filename;
     }
 
     const technologiesArray = Array.isArray(technologies)
       ? technologies
       : technologies.split(",").map((tech) => tech.trim());
 
-    const query = `
-      INSERT INTO projects (projectname, startdate, enddate, description, technologies, image)
-      VALUES ($1, $2, $3, $4, $5, $6)
-    `;
-
-    const values = [
+    const newProject = await Projects.create({
       projectname,
       startdate,
       enddate,
       description,
-      technologiesArray, 
-      imageFileName,
-    ];
-
-    await sequelize.query(query, {
-      bind: values,
-      type: sequelize.QueryTypes.INSERT,
+      technologies: technologiesArray,
+      image: imageFileName,
     });
 
     console.log("Data berhasil disimpan");
+    req.flash("success", "The project has been added successfully.");
     res.redirect("/project?action=add");
   } catch (err) {
     console.error("Error:", err.message);
@@ -212,25 +206,6 @@ exports.addProject = async (req, res) => {
     });
   }
 };
-
-
-exports.deleteProject = async (req, res) => {
-  try {
-    const result = await sequelize.query(
-      "DELETE FROM projects WHERE id = :id",
-      {
-        replacements: { id: req.params.id },
-        type: sequelize.QueryTypes.DELETE,
-      }
-    );
-
-    res.redirect("/project?action=delete");
-  } catch (err) {
-    console.error("Error saat menghapus proyek:", err.message);
-    res.status(500).render("partials/404", { message: "Internal Server Error" });
-  }
-};
-
 
 exports.renderEditProject = async (req, res) => {
   try {
@@ -247,7 +222,7 @@ exports.renderEditProject = async (req, res) => {
     const project = result[0][0];
 
     const formatDate = (date) => {
-      if (!date) return ""; 
+      if (!date) return "";
       const d = new Date(date);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -275,6 +250,8 @@ exports.renderEditProject = async (req, res) => {
       },
       allTechnologies,
       selectedTechnologies,
+      user: req.session.user,
+      actived: "project",
     });
   } catch (err) {
     console.error("Error rendering edit project:", err.message);
@@ -284,47 +261,38 @@ exports.renderEditProject = async (req, res) => {
   }
 };
 
-
 exports.editProject = async (req, res) => {
+  const id = req.params.id;
+  const { projectname, startdate, enddate, description, technologies } =
+    req.body;
+  const uploadDir = path.resolve(__dirname, "../public/img/project/");
+  let imageFileName = null;
+
   try {
-    const { projectname, startdate, enddate, description, technologies } =
-      req.body;
-    let imageFileName = null;
+    const project = await Projects.findOne({ where: { id } });
 
-    const uploadDir = path.resolve(__dirname, "../public/img/project");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    if (!project) {
+      req.flash("error", "Project not found.");
+      return res.status(404).render("partials/404", {
+        message: "Project not found",
+      });
     }
+    const oldImage = project.image;
+    let imageFileName = oldImage;
 
-    const result = await sequelize.query(
-      "SELECT image FROM projects WHERE id = :id",
-      { replacements: { id: req.params.id }, type: QueryTypes.SELECT }
-    );
-    const oldImage = result.length > 0 ? result[0].image : null;
-
-    if (req.files && req.files.image && req.files.image.name) {
-      const imageFile = req.files.image;
-      imageFileName = Date.now() + "_" + imageFile.name;
+    if (req.file) {
+      imageFileName = `${Date.now()}_${req.file.originalname}`;
 
       if (oldImage) {
         const oldImagePath = path.join(uploadDir, oldImage);
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
+          console.log("Old image deleted successfully.");
         }
       }
-
-      const uploadPath = path.join(uploadDir, imageFileName);
-      await new Promise((resolve, reject) => {
-        imageFile.mv(uploadPath, (err) => {
-          if (err) {
-            console.error("Gagal mengunggah file:", err);
-            return reject(err);
-          }
-          resolve();
-        });
-      });
-    } else {
-      imageFileName = oldImage;
+      const newImagePath = path.join(uploadDir, imageFileName);
+      fs.renameSync(req.file.path, newImagePath);
+      console.log("New image uploaded successfully.");
     }
 
     const technologiesArray = technologies
@@ -333,35 +301,62 @@ exports.editProject = async (req, res) => {
         : technologies.split(",").map((tech) => tech.trim())
       : [];
 
-    const query = `
-      UPDATE projects
-      SET projectname = :projectname,
-          startdate = :startdate,
-          enddate = :enddate,
-          description = :description,
-          technologies = ARRAY[:technologies]::text[], -- Ubah ke array
-          image = :image
-      WHERE id = :id
-    `;
-    const values = {
-      projectname,
-      startdate,
-      enddate,
-      description,
-      technologies: technologiesArray,
-      image: imageFileName,
-      id: req.params.id,
-    };
-
-    await sequelize.query(query, {
-      replacements: values,
-      type: QueryTypes.UPDATE,
-    });
+    await Projects.update(
+      {
+        projectname,
+        startdate,
+        enddate,
+        description,
+        technologies: technologiesArray,
+        image: imageFileName,
+      },
+      { where: { id } }
+    );
 
     console.log("Data berhasil diupdate");
-    res.redirect("/project?action=update");
+    req.flash("success", "The project has been updated successfully.");
+    res.redirect("/project");
   } catch (err) {
     console.error("Error saat mengedit proyek:", err.message);
-    res.status(500).render("partials/404", { message: "Internal Server Error" });
+    res
+      .status(500)
+      .render("partials/404", { message: "Internal Server Error" });
+  }
+};
+exports.deleteProject = async (req, res) => {
+  const id = req.params.id;
+  const uploadDir = path.resolve(__dirname, "../public/img/project/");
+
+  try {
+    const result = await Projects.findOne({
+      where: { id },
+    });
+
+    if (!result) {
+      return res.status(404).render("partials/404", {
+        message: "Project not found",
+      });
+    }
+
+    const imageFileName = result.image;
+    console.log(imageFileName);
+
+    if (imageFileName) {
+      const imagePath = path.join(uploadDir, imageFileName);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.log("Gambar berhasil dihapus.");
+      }
+    }
+    await Projects.destroy({
+      where: { id },
+    });
+    req.flash("success", "The project has been deleted successfully.");
+    res.redirect("/project?action=delete");
+  } catch (err) {
+    console.error("Error saat menghapus proyek:", err.message);
+    res
+      .status(500)
+      .render("partials/404", { message: "Internal Server Error" });
   }
 };

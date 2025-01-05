@@ -17,6 +17,19 @@
       <a href="/testimonial" class="{{#if (eq actived 'testimonial')}}active{{/if}}">Testimonial</a>
       <!-- <a href="#contact">Project</a> -->
       <a href="/contact" class="nav-btn contact-me {{#if (eq actived 'contact')}}active{{/if}}">Contact Me</a>
+      {{#if user}}
+      <div class="dropdown">
+        <button class="btn dropdown-toggle bg-danger shawdows text-white" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Hai {{user.username}}
+        </button>
+        <ul class="dropdown-menu transparent">
+          <li><a class="dropdown-item text-black" href="/logout">Log Out</a></li>
+        </ul>
+      </div>
+      {{else}}
+      <a width="30%" href="/login" class="nav-btn login {{#if (eq actived 'login')}}active{{/if}} bg-primary text-white">Login</a>
+      {{/if}}
     </div>
   </nav>
 </section>

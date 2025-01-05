@@ -1,7 +1,7 @@
 <!-- PROFILE -->
-{{> preloader}}
+{{> navbar}}
 <section id="profile">
-  
+
   <div class="contain">
     <div class="containt-wrapper">
       <div class="desc">
@@ -15,30 +15,14 @@
           <a href="mailto:sarofiqs@gmail.com" target="_blank">
             <button>Contact</button>
           </a><br />
-          <a class="cv" href="/img/cv.jpg" download="CV_Arofiq.jpg"><span
-            >download CV </span><img
-              width="5%"
-              src="/img/svg/download.svg"
-              alt=""
-            /></a>
+          <a class="cv" href="/img/cv.jpg" download="CV_Arofiq.jpg"><span>download CV </span><img width="5%"
+              src="/img/svg/download.svg" alt="" /></a>
         </div>
         <div class="icon">
-          <a href="https://github.com/Fiqsss" target="_blank"><img
-              src="/img/sosmed/git.svg"
-              alt=""
-            /></a>
-          <a href="https://www.instagram.com/aro_fiqs/" target="_blank"><img
-              src="/img/sosmed/insta.svg"
-              alt=""
-            /></a>
-          <a href="https://www.tiktok.com/@arofiqsss" target="_blank"><img
-              src="/img/sosmed/tiktok.svg"
-              alt=""
-            /></a>
-          <a href="https://www.linkedin.com/in/arofiqs/" target="_blank"><img
-              src="/img/sosmed/linkid.svg"
-              alt=""
-            /></a>
+          <a href="https://github.com/Fiqsss" target="_blank"><img src="/img/sosmed/git.svg" alt="" /></a>
+          <a href="https://www.instagram.com/aro_fiqs/" target="_blank"><img src="/img/sosmed/insta.svg" alt="" /></a>
+          <a href="https://www.tiktok.com/@arofiqsss" target="_blank"><img src="/img/sosmed/tiktok.svg" alt="" /></a>
+          <a href="https://www.linkedin.com/in/arofiqs/" target="_blank"><img src="/img/sosmed/linkid.svg" alt="" /></a>
         </div>
       </div>
       <div class="cart-wrapper">
@@ -53,4 +37,19 @@
     </div>
   </div>
 </section>
+{{> footer}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const success = urlParams.get("success");
+  if (success) {
+    Swal.fire({
+      title: 'Login Successfully',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      window.history.replaceState(null, null, window.location.pathname);
+    });
+  }
+</script>
 <!-- END PROFILE -->

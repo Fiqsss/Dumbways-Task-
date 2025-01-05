@@ -1,4 +1,5 @@
 {{> preloader}}
+{{> navbar}}
 <section id="project" class="mt-5">
   <div class="project-wrapper d-flex justify-content-center flex-direction-column">
     <div class="search-wrapper rounded-2 d-flex justify-content-between ">
@@ -63,93 +64,6 @@
     </div>
   </div>
 </section>
-<script>
-
-  // function renderProjects(projects) {
-  projects.forEach((project) => {
-    const projectCart = `
-          <div style="width: 19rem;" class="card-wrap col-4 my-3 mx-3 shadow p-0">
-            <a class="text-decoration-none" href="/project/${project.title}">
-                <div class="card">
-                  <img width="100%" height="200px" src="${project.img}" alt="" />
-                  <div class="card-body">
-                    <h5 class="card-title">${project.title}</h5>
-                    <p style="margin: 0;" class="card-text">durasi : ${project.duration}</p>
-                    <p style="margin: 0;" class="card-text my-2">${project.description}</p>
-                    <p style="margin: 15px 10px 15px 0;">Tech: ${project.tech_stack}</p>
-                    <div class="icon my-3">
-                      <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
-                      <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
-                      <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
-                    </div>
-                    <div class="btn-cart">
-                      <button>Edit</button>
-                      <button>Delete</button>
-                    </div>
-                  </div>
-                </div>
-            </a>
-          </div>
-        `;
-    elementHTML.innerHTML += projectCart;
-  })
-  //
-  // async function showAllProjects() {
-  //   const projects = await fetchProjects();
-  //   //elementHTML.innerHTML
-  //
-  //   renderProjects(projects);
-  // }
-  // document.addEventListener('DOMContentLoaded', fetchProjects);
-  // showAllProjects();
-</script>
+{{> footer}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  function confirmDelete(id) {
-    Swal.fire({
-      title: 'Kamu Yakin ?',
-      text: "Data ini tidak bisa di kembalikan",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById(`deleteForm-${id}`).submit();
-      }
-    });
-  }
-
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const action = urlParams.get("action");
-  if (action === "delete") {
-    Swal.fire({
-      title: 'Terhapus!',
-      text: 'Data berhasil di hapus',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    });
-  } else if (action === "add") {
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'Data berhasil di tambahkan',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    });
-  } else if (action === "update") {
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'Data berhasil di update',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      window.history.replaceState(null, null, window.location.pathname);
-    })
-  }
-</script>
+{{> alert}}
