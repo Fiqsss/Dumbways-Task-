@@ -16,25 +16,7 @@ exports.renderContact = (req, res) => {
   });
 };
 
-// exports.getTestimonials = async (req, res) => {
-//   try {
-//     // const result = await pool.query("SELECT * FROM testimonial");
-//     res.status(200).json(result.rows);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).json({
-//       error: "Internal Server Error",
-//     });
-//   }
-// };
 
-exports.renderTestimonial = (req, res) => {
-  res.render("testimonial", {
-    actived: "testimonial",
-    title: "Testimonial | Dumbways Task",
-    user: req.session.user,
-  });
-};
 
 exports.render404 = (req, res) => {
   const code = 404;

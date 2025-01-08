@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const flash = require("express-flash");
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "./public")));
 app.engine("hbs", hbs.engine);
 
 app.set("view engine", "hbs");
+
 hbs.handlebars.registerHelper("includes", function (array, value) {
   console.log("Checking includes:", array, value);
   if (!Array.isArray(array)) {
@@ -56,7 +58,6 @@ hbs.handlebars.registerHelper("increasePrice", function (price) {
   return price;
 });
 
-require("dotenv").config();
 
 app.use("/", routes);
 

@@ -13,16 +13,12 @@
       </div>
     </div>
     <div class="option-wrapper  rounded-2 d-flex justify-content-between m-0 p-3">
+      {{#if user}}
       <div class="search w-100 d-flex justify-content-end">
         <a class="btn text-white addproject d-flex flex-column justify-content-center" href="/addProject"
           type="submit"><span class="fs-6">Add Project</span></a>
-        {{!-- <a class="btn text-white filterbtn d-flex flex-column justify-content-center bg-primary" href="#"
-          type="submit"><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              class="bi bi-filter" viewBox="0 0 16 16">
-              <path
-                d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
-            </svg></span></a> --}}
       </div>
+      {{/if}}
     </div>
     <div class="project-cart">
       <div class="title-project">
@@ -47,6 +43,7 @@
                 <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
                 <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
               </div>
+              {{#if ../user}}
               <div class="btn-cart">
                 <a class="text-decoration-none" href="/editproject/{{this.id}}">Edit</a>
                 <form id="deleteForm-{{this.id}}" action="/deleteproject/{{this.id}}?_method=DELETE" method="POST"
@@ -54,6 +51,7 @@
                 </form>
                 <a onclick="confirmDelete({{this.id}})">Delete</a>
               </div>
+              {{/if}}
             </div>
           </div>
         </div>

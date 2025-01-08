@@ -4,8 +4,7 @@ const path = require("path");
 const { truncateText } = require("../utils/truncateText");
 const { Sequelize, QueryTypes } = require("sequelize");
 const config = require("../config/config");
-const sequelize = new Sequelize(config.development);
-
+const sequelize = new Sequelize(config.production);
 const { Blogs, Users } = require("../models");
 const flash = require("express-flash");
 
@@ -18,13 +17,22 @@ exports.searchBlog = async (req, res) => {
   }
 
   try {
-    const result = await sequelize.query(
-      'SELECT * FROM blogs WHERE title LIKE :search Order by "createdAt" DESC',
-      {
-        type: QueryTypes.SELECT,
-        replacements: { search: `%${searchQuery}%` },
-      }
-    );
+    const result = await Blogs.findAll({
+      where: {
+        title: {
+          [Sequelize.Op.like]: `%${searchQuery}%`,
+        },
+      },
+      include: [
+        {
+          model: Users,
+          as: "user",
+          attributes: ["id", "username", "email"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+    
 
     const updatedBlogs = result.map((blog) => {
       const postDate = new Date(blog.post_date);
@@ -37,10 +45,10 @@ exports.searchBlog = async (req, res) => {
         .toString();
 
       return {
-        ...blog,
-        time: getRelativeTime(postDate),
-        postDate: formattedDate,
+        ...blog.dataValues,
         content: truncateText(blog.content, 150),
+        time: getRelativeTime(new Date(postDate)),
+        postDate: formattedDate,
       };
     });
 
@@ -138,7 +146,7 @@ exports.renderDetailBlog = async (req, res) => {
       });
     }
 
-    const blog = result[0].get({ plain: true }); 
+    const blog = result[0].get({ plain: true });
     const postDate = blog.post_date ? new Date(blog.post_date) : null;
 
     if (!postDate || isNaN(postDate)) {
@@ -179,7 +187,10 @@ exports.renderaddBlog = async (req, res) => {
     req.flash("error", "Please log in to add a blog.");
     return res.status(401).redirect("/blog");
   }
-  res.render("partials/blog/addblog", { title: "Add Blog | Dumbways Task", user: req.session.user });
+  res.render("partials/blog/addblog", {
+    title: "Add Blog | Dumbways Task",
+    user: req.session.user,
+  });
 };
 // END RENDER ADD BLOG
 
@@ -258,7 +269,7 @@ exports.addBlog = async (req, res) => {
       image: imageFileName,
       post_date: postDate,
     });
-    
+
     console.log("data Berehal ditambahkan");
     req.flash("success", "The blog has been added successfully.");
     res.redirect("/blog");
@@ -272,8 +283,6 @@ exports.addBlog = async (req, res) => {
 };
 // END ADD BLOG
 
-
-
 // EDIT BLOG
 exports.editBlog = async (req, res) => {
   const id = req.params.id;
@@ -281,7 +290,6 @@ exports.editBlog = async (req, res) => {
   const uploadDir = path.resolve(__dirname, "../public/img/blog/");
 
   try {
-
     const blog = await Blogs.findOne({ where: { id } });
     if (!blog) {
       req.flash("error", "Blog not found.");
@@ -321,7 +329,6 @@ exports.editBlog = async (req, res) => {
   }
 };
 // END EDIT BLOG
-
 
 // DELETE BLOG
 exports.deleteBlog = async (req, res) => {

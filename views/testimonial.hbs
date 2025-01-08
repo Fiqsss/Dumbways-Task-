@@ -1,173 +1,60 @@
 {{!-- {{> preloader}} --}}
-{{> navbar}} 
+{{> navbar}}
 <section id="testimony">
   <div class="testimony-wrapper">
     <div class="title text-center">
       <h1 class="my-5">My Testimony</h1>
     </div>
     <div class="rating text-center my-4 d-flex justify-content-center gap-3">
-      <button onclick="showAllTestimoni()" type="button" class="btn btn-danger">
+      <a href="/testimonial" type="button" class="btn btn-danger">
         All
-      </button>
-      <button onclick="filterRating(1)" type="button" class="btn btn-danger">
+      </a>
+      <a href="/testimonials/rating/1" type="button" class="btn btn-danger">
         1★
-      </button>
-      <button onclick="filterRating(2)" type="button" class="btn btn-danger">
+      </a>
+      <a href="/testimonials/rating/2" type="button" class="btn btn-danger">
         2★
-      </button>
-      <button onclick="filterRating(3)" type="button" class="btn btn-danger">
+      </a>
+      <a href="/testimonials/rating/3" type="button" class="btn btn-danger">
         3★
-      </button>
-      <button onclick="filterRating(4)" type="button" class="btn btn-danger">
+      </a>
+      <a href="/testimonials/rating/4" type="button" class="btn btn-danger">
         4★
-      </button>
-      <button onclick="filterRating(5)" type="button" class="btn btn-danger">
+      </a>
+      <a href="/testimonials/rating/5" type="button" class="btn btn-danger">
         5★
-      </button>
+      </a>
     </div>
     <div class="cart-wrapper">
       <div class="container">
         <div class="row text-center" id="testimonial-container">
           <!-- konten -->
+          {{#if isEmpty}}
+          <p class="text-danger">{{message}}</p>
+          {{/if}}
+          {{#each testimonis}}
+          <div class="col-xl-3 col-lg-4 col-md-6 d-flex justify-content-center align-items-center m-0">
+            <div class="card mx-0 my-3 shadow p-3 text-center">
+              <div class="w-100 p-0 m-0 d-flex justify-content-center">
+                <img src="/img/testimoni/{{this.image}}" class="card-img-top w-100" alt="..." />
+              </div>
+              <div class="card-body d-flex flex-column justify-content-center align-items-end" style="height: 200px">
+                <div style="height: 100px" class="keterangan overflow-hidden">
+                  <p class="card-text">
+                    {{this.testimoni}}
+                  </p>
+                </div>
+                <p class="fw-bold text-end my-2">{{this.author}}</p>
+                <p class="fw-bold text-end my-2">{{this.rating}} ★ </p>
+              </div>
+            </div>
+          </div>
+          {{/each}}
         </div>
       </div>
     </div>
   </div>
 </section>
-{{> footer}} 
+{{> footer}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-  let testimonial = [
-    {
-      author: "Nur Muhammad Arofiq",
-      rating: 5,
-      testimoni: "Keren Banget Website nya",
-      image: "/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg",
-    },
-    {
-      author: "Sinta",
-      rating: 5,
-      testimoni:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, nobis culpa? Error, sequi adipisci voluptatem expedita dicta vel aspernatur harum",
-      image: "/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg",
-    },
-    {
-      author: "Sandi",
-      rating: 4,
-      testimoni:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, nobis culpa? Error, sequi adipisci voluptatem expedita dicta vel aspernatur harum",
-      image: "/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg",
-    },
-  ];
-  const elementHTML = document.getElementById("testimonial-container");
-
-  const cartHTML = (testimoni) =>
-    testimoni
-      .map((item) => {
-        return `
-            <div class="col-lg-4 col-md-3 d-flex justify-content-center m-0">
-              <div class="card mx-0 my-3 shadow p-3">
-                <img
-                  src="${item.image}"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body" style="height: 200px">
-                  <div style="height: 100px" class="keterangan overflow-hidden">
-                    <p class="card-text">
-                    ${item.testimoni}
-                    </p>
-                  </div>
-                  <p class="fw-bold text-end my-2">${item.author}</p>
-                  <p class="fw-bold text-end my-2">${item.rating}★</p>
-                </div>
-              </div>
-            </div>
-        `;
-      })
-      .join("")
-
-  function filterRating(rating) {
-    const result = testimonial.filter((data) => data.rating === rating);
-    if (result.length === 0) {
-      elementHTML.innerHTML = `<h1>Tidak ada data dengan rating ${rating}★</h1>`;
-    } else {
-      elementHTML.innerHTML = cartHTML(result);
-    }
-  }
-
-  async function fetchTestimonials() {
-    try {
-      const response = await fetch('/api/testimonials');
-      if (!response.ok) {
-        throw new Error('Failed to fetch testimonials');
-      }
-      const testimonials = await response.json();
-      return testimonials;
-    } catch (err) {
-      console.error(err.message);
-      return [];
-    }
-  }
-
-  function renderTestimonials(testimonials) {
-    const container = document.getElementById('testimonial-container');
-    testimonials.forEach((testimonial) => {
-      const testimonialCard = `
-      <div class="col-lg-4 col-md-3 d-flex justify-content-center m-0">
-              <div class="card mx-0 my-3 shadow p-3">
-                <img
-                  src="/img/markus-winkler-bOhKb8e0Iks-unsplash.jpg"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body" style="height: 200px">
-                  <div style="height: 100px" class="keterangan overflow-hidden">
-                    <p class="card-text">
-                    ${testimonial.testimoni}
-                    </p>
-                  </div>
-                  <p class="fw-bold text-end my-2">${testimonial.author}</p>
-                  <p class="fw-bold text-end my-2">${testimonial.rating}★</p>
-                </div>
-              </div>
-            </div>
-    `;
-      container.innerHTML += testimonialCard;
-    });
-  }
-
-  //async function filterRating(rating) {
-  //  const testimonials = await fetchTestimonials();
-  //  const filteredTestimonials = testimonials.filter((data) => data.rating === rating);
-  //  const container = document.getElementById('testimonial-container');
-  //  container.innerHTML = '';
-  //  if (filteredTestimonials.length === 0) {
-  //    container.innerHTML = `<h1>Tidak ada data dengan rating ${rating}★</h1>`;
-  //  } else {
-  //    renderTestimonials(filteredTestimonials);
-  //  }
-  //}
-
-  async function showAllTestimoni() {
-    const testimonials = await fetchTestimonials();
-    const container = document.getElementById('testimonial-container');
-    container.innerHTML = '';
-    renderTestimonials(testimonials);
-  }
-
-
-
-  function showAllTestimoni() {
-    elementHTML.innerHTML = cartHTML(testimonial);
-  }
-
-
-  document.addEventListener('DOMContentLoaded', fetchTestimonials);
-
-
-  showAllTestimoni();
-
-
-</script>

@@ -19,15 +19,19 @@
     "sweetalert2": "^11.15.2"
   },
   "scripts": {
-    "model": "npx sequelize-cli model:generate",
+    "makecontroller" : "npx sequelize-cli controller:generate --name",
+    "make-model": "npx sequelize-cli model:generate",
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "makeseeder": "npx sequelize-cli seed:generate --name",
     "undo-migrate": "npx sequelize-cli db:migrate:undo:all",
     "undo-seed": "npx sequelize-cli db:seed:undo:all"
+    
   },
   "devDependencies": {
     "prettier-plugin-hbs": "^1.0.1",
     "sequelize-cli": "^6.6.2"
   }
 }
+
+

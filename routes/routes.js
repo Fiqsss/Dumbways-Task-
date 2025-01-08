@@ -11,11 +11,13 @@ const { uploadImg } = require("../middlewares/uploadImg");
 const { authRegister, authLogin } = require("../controllers/Auth");
 const {
   renderHome,
-  renderTestimonial,
-  // getTestimonials,
   renderContact,
   render404,
 } = require("../controllers/HomeContactController");
+
+
+const { renderTestimonial,filterByRating } = require("../controllers/TestimoniController");
+
 
 const {
   renderBlog,
@@ -86,6 +88,8 @@ router.post("/editproject/:id", uploadImg.single("image"), editProject);
 router.get("/searchproject", searchProject);
 router.delete("/deleteproject/:id", isLoggedIn, deleteProject);
 // END PROJECT
+router.get("/testimonials/rating/:rating", filterByRating);
+
 
 router.get("/login", isAlreadyLoggedIn, (req, res) =>
   res.render("../views/partials/login")

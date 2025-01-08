@@ -7,18 +7,21 @@ const fs = require("fs");
 const { Sequelize, QueryTypes } = require("sequelize");
 const config = require("../config/config.json");
 
-const sequelize = new Sequelize(config.development);
+const sequelize = new Sequelize(config.production);
 
 const { Projects } = require("../models");
 
 exports.renderProject = async (req, res) => {
   try {
-    const result = await sequelize.query(
-      'SELECT * FROM projects ORDER BY "createdAt" DESC',
-      {
-        type: QueryTypes.SELECT,
-      }
-    );
+    // const result = await sequelize.query(
+    //   'SELECT * FROM projects ORDER BY "createdAt" DESC',
+    //   {
+    //     type: QueryTypes.SELECT,
+    //   }
+    // );
+    const result = await Projects.findAll({
+      order: [["createdAt", "DESC"]],
+    });
 
     const data = result.map((project) => {
       const startDate = project.startdate ? new Date(project.startdate) : null;
@@ -31,7 +34,7 @@ exports.renderProject = async (req, res) => {
           : 0;
 
       return {
-        ...project,
+        ...project.dataValues,
         duration:
           durationInMonths > 0 ? `${durationInMonths} bulan` : "0 bulan",
         description: truncateText(project.description, 50),
@@ -53,22 +56,30 @@ exports.renderProject = async (req, res) => {
 };
 
 exports.searchProject = async (req, res) => {
+  const searchQuery = req.query.search;
+  if (!searchQuery) {
+    return res.redirect("/project");
+  }
   try {
-    const query = req.query.search;
-    if (!query) {
-      return res.redirect("/project");
-    }
+    const result = await Projects.findAll({
+      where: {
+        projectname: {
+          [Sequelize.Op.like]: `%${searchQuery}%`,
+        },
+      },
+      order: [["createdAt", "DESC"]],
+    });
 
-    const result = await sequelize.query(
-      "SELECT * FROM projects WHERE projectname LIKE :search",
-      {
-        type: QueryTypes.SELECT,
-        replacements: { search: `%${query}%` },
-      }
-    );
+    // const result = await sequelize.query(
+    //   "SELECT * FROM projects WHERE projectname LIKE :search",
+    //   {
+    //     type: QueryTypes.SELECT,
+    //     replacements: { search: `%${query}%` },
+    //   }
+    // );
     const data = result.map((project) => {
       return {
-        ...project,
+        ...project.dataValues,
         description: truncateText(project.description, 50),
       };
     });
@@ -77,7 +88,7 @@ exports.searchProject = async (req, res) => {
       actived: "project",
       title: "Project | Dumbways Task",
       projects: data,
-      search: query,
+      search: searchQuery,
       user: req.session.user,
     });
   } catch (err) {

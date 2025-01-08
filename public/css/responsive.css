@@ -3,6 +3,12 @@
   #blog .cart .btn-blog a{
     width: 30%;
   }
+
+  #blog .btn-blog
+  {
+    display: flex;
+    justify-content: end;
+  }
 }
 @media screen and (max-width: 1115px) {
   nav {
@@ -191,8 +197,10 @@
   }
   #blog .cart .btn-blog {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between !important;
     width: 100%;
+    margin: 0;
+    padding: 0;
   }
   #blog .cart .btn-blog a{
     width: 45%;
@@ -203,7 +211,7 @@
     width: 100%;
   }
   #blog .cart .cart-description {
-    margin: 0;
+    margin: 0 !important;
   }
 }
 

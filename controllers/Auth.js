@@ -2,7 +2,7 @@ const { Sequelize, QueryTypes } = require("sequelize");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
-const sequelize = new Sequelize(config.development);
+const sequelize = new Sequelize(config.production);
 const { Users } = require("../models");
 
 exports.authRegister = async (req, res) => {
@@ -35,13 +35,13 @@ exports.authRegister = async (req, res) => {
     });
 
     if (result) {
-      return res.redirect("/login?success=true");
+      req.flash("success", "Register Successfully ");
+      return res.redirect("/login");
     }
   } catch (error) {
     console.error("Error saat registrasi:", error.message);
-
-    // res.redirect("/register?error=true&message=Terjadi+kesalahan+saat+registrasi");
-    res.redirect("/register?error=true");
+    req.flash("error", "An error occurred during registration. Please try again.");
+    res.redirect("/register?");
   }
 };
 
