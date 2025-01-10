@@ -20,8 +20,7 @@
     "sweetalert2": "^11.15.2"
   },
   "scripts": {
-    "start": "node index.js",
-    "server": "nodemon index.js"
+    "start": "node index.js"
   },
   "devDependencies": {
     "prettier-plugin-hbs": "^1.0.1",
