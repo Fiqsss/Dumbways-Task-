@@ -40,8 +40,9 @@ app.set("view engine", "hbs");
 app.set('views', path.join(__dirname, 'views'));
 
 hbs.handlebars.registerHelper("includes", (array, value) => {
-  return Array.isArray(array) && array.includes(value);
+  return array.constructor === Array && array.includes(value);
 });
+
 
 hbs.handlebars.registerHelper("eq", (a, b) => a === b);
 

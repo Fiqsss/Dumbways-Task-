@@ -181,9 +181,11 @@ exports.addProject = async (req, res) => {
       imageFileName = req.file.filename;
     }
 
-    const technologiesArray = Array.isArray(technologies)
-      ? technologies
-      : technologies.split(",").map((tech) => tech.trim());
+    // Memeriksa apakah technologies adalah array dengan memeriksa panjangnya
+    const technologiesArray =
+      typeof technologies === "string"
+        ? technologies.split(",").map((tech) => tech.trim())
+        : (technologies && technologies.length) ? technologies : [];
 
     const newProject = await Projects.create({
       projectname,
@@ -204,6 +206,7 @@ exports.addProject = async (req, res) => {
     });
   }
 };
+
 
 exports.renderEditProject = async (req, res) => {
   try {
@@ -234,7 +237,8 @@ exports.renderEditProject = async (req, res) => {
       selectedTechnologies = project.technologies
         .split(",")
         .map((tech) => tech.trim());
-    } else if (Array.isArray(project.technologies)) {
+    } else if (project.technologies && project.technologies.length) {
+      // Memeriksa apakah technologies adalah array dengan properti length
       selectedTechnologies = project.technologies;
     }
 
@@ -260,6 +264,7 @@ exports.renderEditProject = async (req, res) => {
   }
 };
 
+
 exports.editProject = async (req, res) => {
   const id = req.params.id;
   const { projectname, startdate, enddate, description, technologies } =
@@ -277,7 +282,7 @@ exports.editProject = async (req, res) => {
       });
     }
     const oldImage = project.image;
-    let imageFileName = oldImage;
+    imageFileName = oldImage;
 
     if (req.file) {
       imageFileName = `${Date.now()}_${req.file.originalname}`;
@@ -295,9 +300,9 @@ exports.editProject = async (req, res) => {
     }
 
     const technologiesArray = technologies
-      ? Array.isArray(technologies)
-        ? technologies
-        : technologies.split(",").map((tech) => tech.trim())
+      ? (technologies.length && typeof technologies === "string"
+        ? technologies.split(",").map((tech) => tech.trim())
+        : technologies)
       : [];
 
     await Projects.update(
@@ -322,6 +327,7 @@ exports.editProject = async (req, res) => {
       .render("partials/404", { message: "Internal Server Error" });
   }
 };
+
 exports.deleteProject = async (req, res) => {
   const id = req.params.id;
   const uploadDir = path.resolve(__dirname, "../public/img/project/");
