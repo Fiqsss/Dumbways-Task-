@@ -11,13 +11,11 @@ const { Sequelize } = require("sequelize");
 const config = require("./config/config");
 
 // Konfigurasi Sequelize
-const environment = process.env.NODE_ENV || "production";
+const environment = process.env.NODE_ENV || "development";
 const sequelize = new Sequelize(config[environment]);
 
-// Inisialisasi aplikasi Express
 const app = express();
 
-// Konfigurasi session
 app.use(
   session({
     secret: "fghvN98djH@3lk&9Js1#Xq!oAf*Zn0!",
@@ -27,14 +25,11 @@ app.use(
   })
 );
 
-// Middleware Flash Messages
 app.use(flash());
 
-// Middleware untuk JSON dan URL-encoded form
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Konfigurasi Handlebars
 const hbs = exphbs.create({
   extname: "hbs",
   defaultLayout: "main",
@@ -44,7 +39,6 @@ app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set('views', path.join(__dirname, 'views'));
 
-// Register Helper untuk Handlebars
 hbs.handlebars.registerHelper("includes", (array, value) => {
   return Array.isArray(array) && array.includes(value);
 });
@@ -53,14 +47,11 @@ hbs.handlebars.registerHelper("eq", (a, b) => a === b);
 
 hbs.handlebars.registerHelper("increasePrice", (price) => price + 10);
 
-// Middleware tambahan
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "./public")));
 
-// Rute utama
 app.use("/", routes);
 
-// Jalankan server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);

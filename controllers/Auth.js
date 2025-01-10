@@ -1,47 +1,43 @@
-const { Sequelize, QueryTypes } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
-const sequelize = new Sequelize(config.production);
+const sequelize = new Sequelize(config[process.env.NODE_ENV]);
 const { Users } = require("../models");
 
 exports.authRegister = async (req, res) => {
   const { username, email, password, repassword } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    if (password !== repassword) {
-      req.flash(
-        "error",
-        "Password not match, make sure your password is match"
-      );
+    if (password.trim() !== repassword.trim()) {
+      req.flash("error", "Passwords do not match.");
       return res.redirect("/register");
     }
-    const existingUser = await Users.findOne({ where: { username } });
-    const existingEmail = await Users.findOne({ where: { email } });
-    if (existingUser) {
-      req.flash("error", "Username already exists");
-      return res.redirect("/register");
-    }
-    if(existingEmail)
-    {
-      req.flash("error", "Email already exists");
-      return res.redirect("/register");
-    }
-    const result = await Users.create({
-      username,
-      email,
-      password: hashedPassword,
+
+    const existingUser = await Users.findOne({
+      where: {
+        [Op.or]: [{ username }, { email }],
+      },
     });
 
-    if (result) {
-      req.flash("success", "Register Successfully ");
-      return res.redirect("/login");
+    if (existingUser) {
+      const errorMessage =
+        existingUser.username === username
+          ? "Username already exists"
+          : "Email already exists";
+      req.flash("error", errorMessage);
+      return res.redirect("/register");
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await Users.create({ username, email, password: hashedPassword });
+
+    req.flash("success", "Registration successful!");
+    return res.redirect("/login");
   } catch (error) {
-    console.error("Error saat registrasi:", error.message);
-    req.flash("error", "An error occurred during registration. Please try again.");
-    res.redirect("/register?");
+    console.error("Registration error:", error);
+    req.flash("error", "An error occurred during registration.");
+    return res.redirect("/register");
   }
 };
 
@@ -50,22 +46,8 @@ exports.authLogin = async (req, res) => {
 
   try {
     const user = await Users.findOne({ where: { username } });
-    if (!user) {
-      console.error("Login gagal: Username tidak ditemukan");
-      req.flash(
-        "error",
-        "Login Failed: make sure your username or password is correct"
-      );
-      return res.redirect("/login");
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      console.error("Login gagal: Password salah");
-      req.flash(
-        "error",
-        "Login Failed: make sure your username or password is correct"
-      );
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      req.flash("error", "Invalid username or password.");
       return res.redirect("/login");
     }
 
@@ -75,12 +57,11 @@ exports.authLogin = async (req, res) => {
       email: user.email,
     };
 
-    // delete req.session.user.password;
-    req.flash("success", "Login Successfully");
+    req.flash("success", "Login successful!");
     return res.redirect("/?success=true");
   } catch (error) {
-    console.error("Error saat login:", error.message);
-    req.flash("error", "Terjadi kesalahan saat login");
+    console.error("Login error:", error);
+    req.flash("error", "An error occurred during login.");
     return res.redirect("/login");
   }
 };
