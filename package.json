@@ -20,7 +20,8 @@
     "sweetalert2": "^11.15.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "migrate" : "sequelize db:migrate",
+    "start": "nodemon index.js"
   },
   "devDependencies": {
     "prettier-plugin-hbs": "^1.0.1",
