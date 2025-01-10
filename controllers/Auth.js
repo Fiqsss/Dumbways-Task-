@@ -75,7 +75,7 @@ exports.authLogin = async (req, res) => {
       email: user.email,
     };
 
-    delete req.session.user.password;
+    // delete req.session.user.password;
     req.flash("success", "Login Successfully");
     return res.redirect("/?success=true");
   } catch (error) {

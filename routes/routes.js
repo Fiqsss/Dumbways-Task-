@@ -44,14 +44,6 @@ const {
 
 const router = express.Router();
 
-router.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send("Gagal logout");
-    }
-    res.redirect("/login");
-  });
-});
 
 router.get("/", renderHome);
 router.get("/Home", renderHome);
@@ -99,8 +91,15 @@ router.get("/register", isAlreadyLoggedIn, (req, res) =>
 );
 router.post("/register", isAlreadyLoggedIn, authRegister);
 router.post("/login", isAlreadyLoggedIn, authLogin);
-router.get("/cek", (req, res) => {
-  res.json({message : "berhasil"});
+
+
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Gagal logout");
+    }
+    res.redirect("/login");
+  });
 });
 router.use("*", render404);
 
