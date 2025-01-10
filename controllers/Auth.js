@@ -3,7 +3,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
 const sequelize = new Sequelize(config[process.env.NODE_ENV]);
-const { Users } = require("../models");
+const {Users} = require("../models");
 
 exports.authRegister = async (req, res) => {
   const { username, email, password, repassword } = req.body;
@@ -41,12 +41,21 @@ exports.authRegister = async (req, res) => {
   }
 };
 
+
 exports.authLogin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const user = await Users.findOne({ where: { username } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+
+    if (!user) {
+      req.flash("error", "Invalid username or password.");
+      return res.redirect("/login");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
       req.flash("error", "Invalid username or password.");
       return res.redirect("/login");
     }
