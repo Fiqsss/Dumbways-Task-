@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const flash = require("express-flash");
@@ -7,7 +6,12 @@ const exphbs = require("express-handlebars");
 const path = require("path");
 const routes = require("./routes/routes");
 const methodOverride = require("method-override");
+const config = require("./config/config");
+require("dotenv").config();
 
+const environment = process.env.NODE_ENV 
+const sequelize = new Sequelize(config[environment]);
+const { Sequelize } = require("./models");
 // const fileUpload = require("express-fileupload");
 const app = express();
 app.use(
@@ -29,7 +33,6 @@ const hbs = exphbs.create({
   layoutsDir: path.join(__dirname, "views", "layouts"),
 });
 
-const PORT = process.env.PORT || 9000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));

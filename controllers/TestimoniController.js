@@ -3,7 +3,7 @@ const { truncateText } = require("../utils/truncateText");
 const path = require("path");
 const fs = require("fs");
 const { Sequelize, QueryTypes } = require("sequelize");
-const config = require("../config/config.json");
+const config = require("../config/config");
 const sequelize = new Sequelize(config.production);
 
 const { Testimoni } = require("../models");

@@ -9,7 +9,7 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'production';
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log(`Using environment "${env}"`); 
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require(__dirname + '/../config/config')[env];
 const db = {};
 
 let sequelize;
