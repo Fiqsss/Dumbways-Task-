@@ -61,23 +61,24 @@ router.post("/addBlog", uploadImg.single("image"), addBlog);
 router.post("/editblog/:id", uploadImg.single("image"), editBlog);
 router.get("/searchblog", searchBlog);
 router.get("/detailblog/:title", renderDetailBlog);
-router.delete("/deleteblog/:id", deleteBlog);
+router.delete("/deleteblog/:id", isLoggedIn, deleteBlog);
 // END BLOG
 
 // PROJECT
 router.get("/project", renderProject);
-router.get("/addproject", renderAddProject);
+router.get("/addproject", isLoggedIn, renderAddProject);
 router.get("/api/projects", getProjects);
 router.post("/addproject", uploadImg.single("image"), addProject);
 router.get("/project/:title", getProjectDetails);
 router.get(
   "/editproject/:id",
+  isLoggedIn,
   uploadImg.single("image"),
   renderEditProject
 );
 router.post("/editproject/:id", uploadImg.single("image"), editProject);
 router.get("/searchproject", searchProject);
-router.delete("/deleteproject/:id", deleteProject);
+router.delete("/deleteproject/:id", isLoggedIn, deleteProject);
 // END PROJECT
 router.get("/testimonials/rating/:rating", filterByRating);
 
@@ -100,6 +101,7 @@ router.get("/logout", (req, res) => {
     res.redirect("/login");
   });
 });
+
 router.use("*", render404);
 
 module.exports = router;
