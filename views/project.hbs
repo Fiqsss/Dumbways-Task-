@@ -37,11 +37,10 @@
               </a>
               <p style="margin: 0;" class="card-text">durasi : {{this.duration}}</p>
               <p style="margin: 0;" class="card-text my-2">{{this.description}}</p>
-              {{!-- <p style="margin: 15px 10px 15px 0;">{{this.technologies}}</p> --}}
               <div class="icon my-3">
-                <img width="30px" src="/img/svg/playstore-svgrepo-com.svg" alt="" />
-                <img width="30px" src="/img/svg/android-svgrepo-com.svg" alt="" />
-                <img width="30px" src="/img/svg/java-svgrepo-com.svg" alt="" />
+                {{#each this.technologies}}
+                <img width="30px" src="/img/tech/{{this}}.svg" alt="{{this}}" />
+                {{/each}}
               </div>
               {{#if ../user}}
               <div class="btn-cart">

@@ -12,6 +12,7 @@
         <div class="desc-wrapper">
           <p class="duration">Pengerjaan : {{blog.postDate}} | {{blog.user.username}}</p>
           <p class="desc">{{blog.content}}</p>
+          {{#if user}}
           <div class="btn-wrapper w-100 d-flex justify-content-between">
             <a href="/editblog/{{blog.id}}" style="width: 48%;" class="edit bg-warning btn btn-warning">Edit</a>
             <form id="deleteForm-{{blog.id}}" action="/deleteblog/{{blog.id}}?_method=DELETE" method="POST"
@@ -20,6 +21,7 @@
             <a style="width: 48%;" onclick="confirmDelete({{blog.id}})" class="delete btn btn-danger"
               type="submit">Delete Blog</a>
           </div>
+          {{/if}}
         </div>
       </div>
     </div>

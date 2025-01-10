@@ -57,6 +57,7 @@ exports.searchBlog = async (req, res) => {
       title: "Blog | Dumbways Task",
       blogs: updatedBlogs,
       searchQuery: searchQuery,
+      user: req.session.user,
     });
   } catch (err) {
     const code = 500;
@@ -112,8 +113,8 @@ exports.renderBlog = async (req, res) => {
     res.render("blog", {
       actived: "blog",
       title: "Blog | Dumbways Task",
+      user: req.session.user,
       blogs: blogs,
-      user: req.session?.user || null,
     });
   } catch (err) {
     console.error("Error fetching blog posts:", err.message);
@@ -169,6 +170,7 @@ exports.renderDetailBlog = async (req, res) => {
       title: "Blog | Dumbways Task",
       blog: blog,
       actived: "blog",
+      user: req.session.user,
     });
   } catch (err) {
     console.error(err.message);
@@ -197,48 +199,45 @@ exports.renderaddBlog = async (req, res) => {
 // RENDER EDIT BLOG
 exports.rendereditBlog = async (req, res) => {
   try {
-    if (req.session && req.session.user) {
-      const userId = req.session.user.id;
-      const blog = await Blogs.findOne({
-        where: { id: req.params.id },
-      });
-
-      if (blog.user_id !== userId) {
-        req.flash("error", "You do not have permission to edit this blog.");
-        return res.status(403).redirect("/blog");
-      }
-    } else {
+    if (!req.session || !req.session.user) {
       req.flash("error", "Please log in to edit this blog.");
       return res.status(401).redirect("/blog");
     }
 
-    const [results] = await sequelize.query(
-      `SELECT * FROM blogs WHERE id = '${req.params.id}'`,
-      {
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-    if (results.length === 0) {
+    const userId = req.session.user.id;
+    const blogId = req.params.id;
+
+    const blog = await Blogs.findOne({
+      where: { id: blogId },
+    });
+
+    if (!blog) {
       return res.status(404).render("partials/404", {
         message: "Blog not found.",
         codeArray: [404],
       });
     }
 
-    blog = results;
+    if (blog.user_id !== userId) {
+      req.flash("error", "You do not have permission to edit this blog.");
+      return res.status(403).redirect("/blog");
+    }
+
     res.render("partials/blog/editblog", {
+      actived: "blog",
       title: "Edit Blog | Dumbways Task",
-      blog,
+      blog: blog.dataValues,
       user: req.session.user,
     });
   } catch (err) {
-    console.error(err.message);
+    console.error("Error rendering edit blog page:", err.message);
     res.status(500).render("partials/404", {
       message: "Internal Server Error",
       codeArray: [500],
     });
   }
 };
+
 // END RENDER EDIT BLOG
 
 // ADD BLOG

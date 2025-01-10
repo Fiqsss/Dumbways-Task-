@@ -13,12 +13,6 @@ const { Projects } = require("../models");
 
 exports.renderProject = async (req, res) => {
   try {
-    // const result = await sequelize.query(
-    //   'SELECT * FROM projects ORDER BY "createdAt" DESC',
-    //   {
-    //     type: QueryTypes.SELECT,
-    //   }
-    // );
     const result = await Projects.findAll({
       order: [["createdAt", "DESC"]],
     });
@@ -70,13 +64,6 @@ exports.searchProject = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    // const result = await sequelize.query(
-    //   "SELECT * FROM projects WHERE projectname LIKE :search",
-    //   {
-    //     type: QueryTypes.SELECT,
-    //     replacements: { search: `%${query}%` },
-    //   }
-    // );
     const data = result.map((project) => {
       return {
         ...project.dataValues,
@@ -120,47 +107,46 @@ exports.renderAddProject = (req, res) => {
 
 exports.getProjectDetails = async (req, res) => {
   const { title } = req.params;
+
   try {
-    if (!title || typeof title !== "string") {
+    if (!title || typeof title !== "string" || title.trim() === "") {
       return res
         .status(400)
         .render("partials/404", { message: "Invalid project title" });
     }
 
-    const result = await sequelize.query(
-      "SELECT * FROM projects WHERE projectname = :title",
-      {
-        replacements: { title },
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
+    const result = await Projects.findOne({
+      where: { projectname: title.trim() },
+    });
 
-    if (result.length > 0) {
-      const project = result[0];
-      const startDate = new Date(project.startdate);
-      const endDate = new Date(project.enddate);
-
-      if (isNaN(startDate) || isNaN(endDate)) {
-        return res
-          .status(400)
-          .render("partials/404", { message: "Invalid project dates" });
-      }
-
-      const durationInMonths =
-        (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-        (endDate.getMonth() - startDate.getMonth());
-
-      return res.render("partials/project/detailproject", {
-        projects: project,
-        duration: durationInMonths,
-        user: req.session.user,
-        actived: "project",
-      });
-    } else {
+    if (!result) {
       return res
         .status(404)
         .render("partials/404", { message: "Project not found" });
     }
+
+    const project = result.dataValues || result;
+    console.log(project);
+
+    const startDate = project.startdate ? new Date(project.startdate) : null;
+    const endDate = project.enddate ? new Date(project.enddate) : null;
+
+    if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate)) {
+      return res
+        .status(400)
+        .render("partials/404", { message: "Invalid project dates" });
+    }
+
+    const durationInMonths =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      (endDate.getMonth() - startDate.getMonth());
+
+    return res.render("partials/project/detailproject", {
+      projects: project,
+      duration: durationInMonths,
+      user: req.session.user,
+      actived: "project",
+    });
   } catch (err) {
     console.error("Error fetching project details:", err.message);
     return res
@@ -168,6 +154,7 @@ exports.getProjectDetails = async (req, res) => {
       .render("partials/404", { message: "Internal Server Error" });
   }
 };
+
 
 exports.addProject = async (req, res) => {
   const { projectname, startdate, enddate, description, technologies } =
@@ -220,17 +207,18 @@ exports.addProject = async (req, res) => {
 
 exports.renderEditProject = async (req, res) => {
   try {
-    const result = await sequelize.query(
-      `SELECT * FROM projects WHERE id = '${req.params.id}'`
-    );
+    const result = await Projects.findOne({
+      where: { id: req.params.id },
+    });
 
-    if (result[0].length === 0) {
-      return res.status(404).render("partials/404", {
-        message: "Project not found",
-      });
+    if (!result) {
+      return res
+        .status(404)
+        .render("partials/404", { message: "Project not found" });
     }
 
-    const project = result[0][0];
+    const project = result.dataValues || result;
+    console.log(project);
 
     const formatDate = (date) => {
       if (!date) return "";

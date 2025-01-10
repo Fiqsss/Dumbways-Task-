@@ -99,6 +99,9 @@ router.get("/register", isAlreadyLoggedIn, (req, res) =>
 );
 router.post("/register", isAlreadyLoggedIn, authRegister);
 router.post("/login", isAlreadyLoggedIn, authLogin);
+router.get("/cek", (req, res) => {
+  res.json({message : "berhasil"});
+});
 router.use("*", render404);
 
 module.exports = router;
