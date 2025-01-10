@@ -21,8 +21,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "migrate": "npx sequelize-cli db:migrate",
-    "seed": "npx sequelize-cli db:seed:all"
+    "server": "nodemon index.js"
   },
   "devDependencies": {
     "prettier-plugin-hbs": "^1.0.1",
