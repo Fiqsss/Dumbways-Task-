@@ -56,7 +56,6 @@ app.use(express.static(path.join(__dirname, "./public")));
 
 app.use("/", routes);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+app.listen(9000, () => {
+  console.log(`Server berjalan di http://localhost:9000`);
 });
