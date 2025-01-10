@@ -21,7 +21,7 @@
   },
   "scripts": {
     "migrate" : "sequelize db:migrate",
-    "start": "nodemon index.js"
+    "start": "nodemon app.js"
   },
   "devDependencies": {
     "prettier-plugin-hbs": "^1.0.1",

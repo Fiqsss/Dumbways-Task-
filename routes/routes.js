@@ -61,24 +61,23 @@ router.post("/addBlog", uploadImg.single("image"), addBlog);
 router.post("/editblog/:id", uploadImg.single("image"), editBlog);
 router.get("/searchblog", searchBlog);
 router.get("/detailblog/:title", renderDetailBlog);
-router.delete("/deleteblog/:id", isLoggedIn, deleteBlog);
+router.delete("/deleteblog/:id", deleteBlog);
 // END BLOG
 
 // PROJECT
 router.get("/project", renderProject);
-router.get("/addproject", isLoggedIn, renderAddProject);
+router.get("/addproject", renderAddProject);
 router.get("/api/projects", getProjects);
 router.post("/addproject", uploadImg.single("image"), addProject);
 router.get("/project/:title", getProjectDetails);
 router.get(
   "/editproject/:id",
-  isLoggedIn,
   uploadImg.single("image"),
   renderEditProject
 );
 router.post("/editproject/:id", uploadImg.single("image"), editProject);
 router.get("/searchproject", searchProject);
-router.delete("/deleteproject/:id", isLoggedIn, deleteProject);
+router.delete("/deleteproject/:id", deleteProject);
 // END PROJECT
 router.get("/testimonials/rating/:rating", filterByRating);
 
