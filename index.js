@@ -1,19 +1,23 @@
 const express = require("express");
 const session = require("express-session");
 const flash = require("express-flash");
-const isLoggedIn = require("./middlewares/authMiddleware");
 const exphbs = require("express-handlebars");
 const path = require("path");
-const routes = require("./routes/routes");
 const methodOverride = require("method-override");
-const config = require("./config/config");
+const routes = require("./routes/routes");
 require("dotenv").config();
 
-const environment = process.env.NODE_ENV 
+const { Sequelize } = require("sequelize");
+const config = require("./config/config");
+
+// Konfigurasi Sequelize
+const environment = process.env.NODE_ENV || "production";
 const sequelize = new Sequelize(config[environment]);
-const { Sequelize } = require("./models");
-// const fileUpload = require("express-fileupload");
+
+// Inisialisasi aplikasi Express
 const app = express();
+
+// Konfigurasi session
 app.use(
   session({
     secret: "fghvN98djH@3lk&9Js1#Xq!oAf*Zn0!",
@@ -23,47 +27,40 @@ app.use(
   })
 );
 
+// Middleware Flash Messages
 app.use(flash());
 
+// Middleware untuk JSON dan URL-encoded form
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Konfigurasi Handlebars
 const hbs = exphbs.create({
   extname: "hbs",
   defaultLayout: "main",
   layoutsDir: path.join(__dirname, "views", "layouts"),
 });
-
-
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
-// app.use(fileUpload());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "./public")));
 app.engine("hbs", hbs.engine);
-
 app.set("view engine", "hbs");
 
-hbs.handlebars.registerHelper("includes", function (array, value) {
-  console.log("Checking includes:", array, value);
-  if (!Array.isArray(array)) {
-    console.error("Array is not defined or not an array:", array);
-    return false;
-  }
-  return array.includes(value);
+// Register Helper untuk Handlebars
+hbs.handlebars.registerHelper("includes", (array, value) => {
+  return Array.isArray(array) && array.includes(value);
 });
 
-hbs.handlebars.registerHelper("eq", function (a, b) {
-  return a === b;
-});
+hbs.handlebars.registerHelper("eq", (a, b) => a === b);
 
-hbs.handlebars.registerHelper("increasePrice", function (price) {
-  price += 10;
-  return price;
-});
+hbs.handlebars.registerHelper("increasePrice", (price) => price + 10);
 
+// Middleware tambahan
+app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, "./public")));
 
+// Rute utama
 app.use("/", routes);
+
+// Jalankan server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("Server berjalan di http://localhost:9000");
+  console.log(`Server berjalan di http://localhost:${port}`);
 });
