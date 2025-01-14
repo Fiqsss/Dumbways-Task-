@@ -1,25 +1,15 @@
-{{#if messages.success}}
+{{#if flash.message}}
 <script>
     Swal.fire({
-        text: "{{messages.success}}",
-        icon: "success",
-        confirmButtonText: "OK",
+        text: "{{flash.message}}",
+        icon: "{{flash.type}}",
+        confirmButtonText: "OK"
     }).then(() => {
         window.history.replaceState(null, null, window.location.pathname);
     });
 </script>
 {{/if}}
-{{#if messages.error}}
-<script>
-    Swal.fire({
-        text: "{{messages.error}}",
-        icon: "error",
-        confirmButtonText: "OK",
-    }).then(() => {
-        window.history.replaceState(null, null, window.location.pathname);
-    });
-</script>
-{{/if}}
+
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     //const action = urlParams.get("action");
@@ -41,4 +31,3 @@
         });
     }
 </script>
-

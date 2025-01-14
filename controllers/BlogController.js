@@ -6,7 +6,6 @@ const { Sequelize, QueryTypes } = require("sequelize");
 const config = require("../config/config");
 const sequelize = new Sequelize(config.production);
 const { Blogs, Users } = require("../models");
-const flash = require("express-flash");
 
 // SEARCH BLOG
 exports.searchBlog = async (req, res) => {
@@ -32,7 +31,6 @@ exports.searchBlog = async (req, res) => {
       ],
       order: [["createdAt", "DESC"]],
     });
-    
 
     const updatedBlogs = result.map((blog) => {
       const postDate = new Date(blog.post_date);
@@ -186,7 +184,10 @@ exports.renderDetailBlog = async (req, res) => {
 // RENDER ADD BLOG
 exports.renderaddBlog = async (req, res) => {
   if (!req.session || !req.session.user) {
-    req.flash("error", "Please log in to add a blog.");
+    req.session.flash = {
+      message: "Please log in to add a blog.",
+      type: "error",
+    };
     return res.status(401).redirect("/blog");
   }
   res.render("partials/blog/addblog", {
@@ -200,7 +201,10 @@ exports.renderaddBlog = async (req, res) => {
 exports.rendereditBlog = async (req, res) => {
   try {
     if (!req.session || !req.session.user) {
-      req.flash("error", "Please log in to edit this blog.");
+      req.session.flash = {
+        message: "Please log in to edit a blog.",
+        type: "error",
+      };
       return res.status(401).redirect("/blog");
     }
 
@@ -219,10 +223,17 @@ exports.rendereditBlog = async (req, res) => {
     }
 
     if (blog.user_id !== userId) {
-      req.flash("error", "You do not have permission to edit this blog.");
+      req.session.flash = {
+        message: "You do not have permission to edit this blog.",
+        type: "error",
+      };
       return res.status(403).redirect("/blog");
     }
 
+    req.session.flash = {
+      message: "Blog edited successfully.",
+      type: "success",
+    };
     res.render("partials/blog/editblog", {
       actived: "blog",
       title: "Edit Blog | Dumbways Task",
@@ -242,44 +253,41 @@ exports.rendereditBlog = async (req, res) => {
 
 // ADD BLOG
 exports.addBlog = async (req, res) => {
-  console.log("Request Body:", req.body);
-  console.log("Uploaded File:", req.file);
-
-  const { title, content } = req.body;
-  let imageFileName = null;
-
   try {
+    const { title, content } = req.body;
+    let imageFileName = req.file ? req.file.filename : null;
+
     if (!title || !content) {
-      return res.status(400).render("partials/404", {
+      req.session.flash = {
         message: "Title dan content harus diisi.",
-        codeArray: [400],
-      });
+        type: "error",
+      };
+      return res.redirect("/add-blog");
     }
 
-    if (req.file) {
-      imageFileName = req.file.filename;
-    }
-
-    const postDate = new Date();
-    const newBlog = await Blogs.create({
+    await Blogs.create({
       title,
       content,
       user_id: req.session.user.id,
       image: imageFileName,
-      post_date: postDate,
+      post_date: new Date(),
     });
 
-    console.log("data Berehal ditambahkan");
-    req.flash("success", "The blog has been added successfully.");
+    req.session.flash = {
+      message: "The blog has been added successfully.",
+      type: "success",
+    };
     res.redirect("/blog");
   } catch (error) {
     console.error("Gagal menambahkan blog:", error.message);
-    res.status(500).render("partials/404", {
+    req.session.flash = {
       message: "Gagal menambahkan blog. Silakan coba lagi.",
-      codeArray: [500],
-    });
+      type: "error",
+    };
+    res.redirect("/add-blog");
   }
 };
+
 // END ADD BLOG
 
 // EDIT BLOG
@@ -291,7 +299,10 @@ exports.editBlog = async (req, res) => {
   try {
     const blog = await Blogs.findOne({ where: { id } });
     if (!blog) {
-      req.flash("error", "Blog not found.");
+      req.session.flash = {
+        message: "Blog not found.",
+        type: "error",
+      };
       return res.status(404).redirect("/blog");
     }
 
@@ -319,11 +330,17 @@ exports.editBlog = async (req, res) => {
       { where: { id } }
     );
 
-    req.flash("success", "Blog has been updated successfully.");
+    req.session.flash = {
+      message: "Blog updated successfully.",
+      type: "success",
+    };
     res.redirect("/blog");
   } catch (error) {
     console.error("Error updating blog:", error.message);
-    req.flash("error", "Failed to update blog. Please try again.");
+    req.session.flash = {
+      message: "Failed to update blog.",
+      type: "error",
+    }
     res.status(500).redirect("/blog");
   }
 };
@@ -338,7 +355,10 @@ exports.deleteBlog = async (req, res) => {
     const blog = await Blogs.findOne({ where: { id } });
 
     if (!blog) {
-      req.flash("error", "Blog not found.");
+      req.session.flash = {
+        message: "Blog not found.",
+        type: "error",
+      }
       return res.status(404).redirect("/blog");
     }
 
@@ -346,11 +366,17 @@ exports.deleteBlog = async (req, res) => {
       const userId = req.session.user.id;
 
       if (blog.user_id !== userId) {
-        req.flash("error", "You do not have permission to delete this blog.");
+        req.session.flash = {
+          message: "You are not authorized to delete this blog.",
+          type: "error",
+        }
         return res.status(403).redirect("/blog");
       }
     } else {
-      req.flash("error", "Please log in to delete this blog.");
+      req.session.flash = {
+        message: "Please log in to delete a blog.",
+        type: "error",
+      }
       return res.status(401).redirect("/blog");
     }
 
@@ -371,7 +397,10 @@ exports.deleteBlog = async (req, res) => {
 
     await Blogs.destroy({ where: { id } });
 
-    req.flash("success", "Blog deleted successfully.");
+    req.session.flash = {
+      message: "Blog deleted successfully.",
+      type: "success",
+    }
     res.redirect("/blog?action=delete");
   } catch (err) {
     console.error("Failed to delete blog:", err.message);

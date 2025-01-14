@@ -3,14 +3,17 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
 const sequelize = new Sequelize(config[process.env.NODE_ENV]);
-const {Users} = require("../models");
+const { Users } = require("../models");
 
 exports.authRegister = async (req, res) => {
   const { username, email, password, repassword } = req.body;
 
   try {
     if (password.trim() !== repassword.trim()) {
-      req.flash("error", "Passwords do not match.");
+      req.session.flash = {
+        message: "Passwords do not match.",
+        type: "error",
+      };
       return res.redirect("/register");
     }
 
@@ -25,22 +28,30 @@ exports.authRegister = async (req, res) => {
         existingUser.username === username
           ? "Username already exists"
           : "Email already exists";
-      req.flash("error", errorMessage);
+      req.session.flash = {
+        message: errorMessage,
+        type: "error",
+      };
       return res.redirect("/register");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await Users.create({ username, email, password: hashedPassword });
 
-    req.flash("success", "Registration successful!");
+    req.session.flash = {
+      message: "Registration successful!",
+      type: "success",
+    };
     return res.redirect("/login");
   } catch (error) {
     console.error("Registration error:", error);
-    req.flash("error", "An error occurred during registration.");
+    req.session.flash = {
+      message: "An error occurred during registration.",
+      type: "error",
+    };
     return res.redirect("/register");
   }
 };
-
 
 exports.authLogin = async (req, res) => {
   const { username, password } = req.body;
@@ -49,14 +60,20 @@ exports.authLogin = async (req, res) => {
     const user = await Users.findOne({ where: { username } });
 
     if (!user) {
-      req.flash("error", "Invalid username or password.");
+      req.session.flash = {
+        message: "Invalid username or password.",
+        type: "error",
+      };
       return res.redirect("/login");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      req.flash("error", "Invalid username or password.");
+      req.session.flash = {
+        message: "Invalid username or password.",
+        type: "error",
+      };
       return res.redirect("/login");
     }
 
@@ -65,12 +82,17 @@ exports.authLogin = async (req, res) => {
       username: user.username,
       email: user.email,
     };
-
-    req.flash("success", "Login successful!");
+    req.session.flash = {
+      message: "Login successful!",
+      type: "success",
+    };
     return res.redirect("/?success=true");
   } catch (error) {
     console.error("Login error:", error);
-    req.flash("error", "An error occurred during login.");
+    req.session.flash = {
+      message: "An error occurred during login.",
+      type: "error",
+    }
     return res.redirect("/login");
   }
 };

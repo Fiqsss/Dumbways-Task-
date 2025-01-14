@@ -155,7 +155,6 @@ exports.getProjectDetails = async (req, res) => {
   }
 };
 
-
 exports.addProject = async (req, res) => {
   const { projectname, startdate, enddate, description, technologies } =
     req.body;
@@ -171,7 +170,10 @@ exports.addProject = async (req, res) => {
       !description ||
       !technologies
     ) {
-      req.flash("error", "All fields are required.");
+      req.session.flash = {
+        message: "Please fill in all the required fields.",
+        type: "error",
+      };
       return res.status(400).render("partials/project/addproject", {
         title: "Add Project | Dumbways Task",
         user: req.session.user,
@@ -185,7 +187,9 @@ exports.addProject = async (req, res) => {
     const technologiesArray =
       typeof technologies === "string"
         ? technologies.split(",").map((tech) => tech.trim())
-        : (technologies && technologies.length) ? technologies : [];
+        : technologies && technologies.length
+        ? technologies
+        : [];
 
     const newProject = await Projects.create({
       projectname,
@@ -197,7 +201,10 @@ exports.addProject = async (req, res) => {
     });
 
     console.log("Data berhasil disimpan");
-    req.flash("success", "The project has been added successfully.");
+    req.session.flash = {
+      message: "Project added successfully.",
+      type: "success",
+    };
     res.redirect("/project?action=add");
   } catch (err) {
     console.error("Error:", err.message);
@@ -206,7 +213,6 @@ exports.addProject = async (req, res) => {
     });
   }
 };
-
 
 exports.renderEditProject = async (req, res) => {
   try {
@@ -264,7 +270,6 @@ exports.renderEditProject = async (req, res) => {
   }
 };
 
-
 exports.editProject = async (req, res) => {
   const id = req.params.id;
   const { projectname, startdate, enddate, description, technologies } =
@@ -276,7 +281,10 @@ exports.editProject = async (req, res) => {
     const project = await Projects.findOne({ where: { id } });
 
     if (!project) {
-      req.flash("error", "Project not found.");
+      req.session.flash = {
+        message: "Project not found",
+        type: "error",
+      };
       return res.status(404).render("partials/404", {
         message: "Project not found",
       });
@@ -300,9 +308,9 @@ exports.editProject = async (req, res) => {
     }
 
     const technologiesArray = technologies
-      ? (technologies.length && typeof technologies === "string"
+      ? technologies.length && typeof technologies === "string"
         ? technologies.split(",").map((tech) => tech.trim())
-        : technologies)
+        : technologies
       : [];
 
     await Projects.update(
@@ -318,7 +326,10 @@ exports.editProject = async (req, res) => {
     );
 
     console.log("Data berhasil diupdate");
-    req.flash("success", "The project has been updated successfully.");
+    req.session.flash = {
+      message: "Project updated successfully.",
+      type: "success",
+    };
     res.redirect("/project");
   } catch (err) {
     console.error("Error saat mengedit proyek:", err.message);
@@ -356,7 +367,10 @@ exports.deleteProject = async (req, res) => {
     await Projects.destroy({
       where: { id },
     });
-    req.flash("success", "The project has been deleted successfully.");
+    req.session.flash = {
+      message: "Project deleted successfully.",
+      type: "success",
+    };
     res.redirect("/project?action=delete");
   } catch (err) {
     console.error("Error saat menghapus proyek:", err.message);

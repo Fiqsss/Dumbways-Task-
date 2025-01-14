@@ -67,27 +67,15 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{#if messages.success}}
+    {{#if flash.message}}
     <script>
         Swal.fire({
-            text: "{{messages.success}}",
-            icon: "success",
+            text: `{{flash.message}}`,
+            icon: ` flash.type === "success" ? "success" : "error" `,
             confirmButtonText: "OK",
         }).then(() => {
             window.history.replaceState(null, null, window.location.pathname);
         });
-    </script>
-    {{/if}}
-    {{#if messages.error}}
-    <script>
-        Swal.fire({
-            text: "{{messages.error}}",
-            icon: "error",
-            confirmButtonText: "OK",
-        }).then(() => {
-            window.history.replaceState(null, null, window.location.pathname);
-        });
-
     </script>
     {{/if}}
 </body>

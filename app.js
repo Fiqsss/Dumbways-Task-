@@ -3,7 +3,6 @@ const session = require("express-session");
 const RedisStore = require("connect-redis").default;
 const redis = require("redis");
 const client = redis.createClient();
-const flash = require("express-flash");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const methodOverride = require("method-override");
@@ -28,8 +27,11 @@ app.use(
   })
 );
 
-app.use(flash());
-
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash || {};
+  delete req.session.flash;
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
