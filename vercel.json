@@ -2,8 +2,8 @@
     "version": 2,
     "builds": [
         {
-            "src": "package.json",
-            "use": "@frontity/now",
+            "src": "app.js",
+            "use": "@vercel/node",
             "config": {"includeFiles": ["dist/**"]}
         }
     ],
